@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1042</width>
+    <height>834</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Stretched Wire</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../../resources/img/lnls.ico</normaloff>../../resources/img/lnls.ico</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QTabWidget" name="twg_main_tab">
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="tab">
+       <attribute name="icon">
+        <iconset>
+         <normaloff>../../resources/img/Connection.png</normaloff>../../resources/img/Connection.png</iconset>
+       </attribute>
+       <attribute name="title">
+        <string>Connection</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_2"/>
+      </widget>
+      <widget class="QWidget" name="tab_2">
+       <attribute name="icon">
+        <iconset>
+         <normaloff>../../resources/img/service_manager.png</normaloff>../../resources/img/service_manager.png</iconset>
+       </attribute>
+       <attribute name="title">
+        <string>Main Settings</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_6"/>
+      </widget>
+      <widget class="QWidget" name="tab_4">
+       <attribute name="icon">
+        <iconset>
+         <normaloff>../../resources/img/kbackgammon_engine.png</normaloff>../../resources/img/kbackgammon_engine.png</iconset>
+       </attribute>
+       <attribute name="title">
+        <string>Motor and Integrator</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_12"/>
+      </widget>
+      <widget class="QWidget" name="tab_3">
+       <attribute name="icon">
+        <iconset>
+         <normaloff>../../resources/img/magnet.png</normaloff>../../resources/img/magnet.png</iconset>
+       </attribute>
+       <attribute name="title">
+        <string>Measurements</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_23"/>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1042</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,3 @@
+include VERSION
+recursive-include stretchedwire *.ui
+graft stretchedwire/resources/img
