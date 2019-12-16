@@ -23,18 +23,6 @@ class ConnectionWidget(_QWidget):
         uifile = _get_ui_file(self)
         self.ui = _uic.loadUi(uifile, self)
 
-        _icon = _get_icon_path('ppmac')
-        self.ui.la_ppmac.setStyleSheet(
-            'border-image: url(' + _icon + ');')
-
-        _icon = _get_icon_path('FDI2056')
-        self.ui.la_fdi.setStyleSheet(
-            'border-image: url(' + _icon + ');')
-
-        _icon = _get_icon_path('lnls')
-        self.ui.la_lnls.setStyleSheet(
-            'border-image: url(' + _icon + ');')
-
         self.mdriver = _mdriver
         self.mint = _mint
         self.config = _config
@@ -71,12 +59,8 @@ class ConnectionWidget(_QWidget):
         """Disconnect the FDI2056."""
         if self.mint.disconnect():
             self.ui.signal_FDI_connected.setEnabled(False)
-        else:
-            self.ui.signal_FDI_connected.setEnabled(True)
 
     def disconnect_ppmac(self):
         """Disconnect the PowerBrick LV."""
         if self.mdriver.disconnect():
             self.ui.signal_ppmac_connected.setEnabled(False)
-        else:
-            self.ui.signal_ppmac_connected.setEnabled(True)

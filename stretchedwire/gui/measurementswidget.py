@@ -38,8 +38,21 @@ class MeasurementsWidget(_QWidget):
         self.meas = _meas
 
         self.list_config_files()
+        
         # connect signals and slots
         self.connect_signal_slots()
+        
+        # temporarily disabling measurement button
+        #self.ui.pbt_start_meas.setEnabled(False)
+
+    def closeEvent(self, event):
+        """Close widget."""
+        try:
+            self.mdriver.abort_motion_prog()
+            event.accept()
+        except Exception:
+            _traceback.print_exc(file=_sys.stdout)
+            event.accept()
 
     def connect_signal_slots(self):
         """Create signal and slot connections."""
@@ -65,7 +78,7 @@ class MeasurementsWidget(_QWidget):
                 _QMessageBox.warning(self, 'Warning', 'Timeout while '
                                      'waiting for integrator data.',
                                      _QMessageBox.Ok)
-                raise Exception
+                return
             _QApplication.processEvents()
 
         if self.stop is False:
@@ -75,12 +88,13 @@ class MeasurementsWidget(_QWidget):
                 try:
                     _results[i] = float(_results[i].strip(' WB'))
                 except Exception:
+                    _traceback.print_exc(file=_sys.stdout)
                     if 'NAN' in _results[i]:
                         _QMessageBox.warning(self, 'Warning',
                                              'Integrator tension over-range.\n'
                                              'Please configure a lower gain.',
                                              _QMessageBox.Ok)
-                    raise Exception
+                    return
 
             self.meas.raw_curve = _np.array(_results, dtype=_np.float64)
             try:
@@ -88,7 +102,8 @@ class MeasurementsWidget(_QWidget):
                     self.config.n_scans,
                     self.config.n_pts).transpose()
             except Exception:
-                raise Exception
+                _traceback.print_exc(file=_sys.stdout)
+                return
 
             self.ui.gv_rawcurves.plotItem.curves.clear()
             self.ui.gv_rawcurves.clear()
@@ -109,20 +124,19 @@ class MeasurementsWidget(_QWidget):
         self.mdriver.abort_motion_prog()
         # _comm.fdi.stop_measurement()
         self.stop = True
-        raise Exception
 
     def load(self):
         """Loads configuration set."""
         filename = self.ui.cmb_config.currentText() + '.cfg'
         if filename != '':
             self.config.read_file(filename)
-        '''
-        self.ui.le_motor_acceleration.setText(str(self.config.ac))
-        self.ui.le_motor_vspeed.setText(str(self.config.spdv))
-        self.ui.le_motor_hspeed.setText(str(self.config.spdh))
-        self.ui.cmb_integrator_gain.setCurrentText(str(self.config.gain))
-        self.ui.cmb_integration_pts.setCurrentText(str(self.config.n_pts))
-        '''
+
+        # self.ui.le_motor_acceleration.setText(str(self.config.ac))
+        # self.ui.le_motor_vspeed.setText(str(self.config.spdv))
+        # self.ui.le_motor_hspeed.setText(str(self.config.spdh))
+        # self.ui.cmb_integrator_gain.setCurrentText(str(self.config.gain))
+        # self.ui.cmb_integration_pts.setCurrentText(str(self.config.n_pts))
+
         self.ui.le_operator.setText(self.config.operator)
         self.ui.le_magnet_name.setText(self.config.magnet_name)
         self.ui.cmb_meas_axis.setCurrentText(self.config.axis)
@@ -133,8 +147,18 @@ class MeasurementsWidget(_QWidget):
     def save_config(self):
         """Save current configuration to file."""
         self.update_config()
-        filename = self.ui.cmb_config.currentText()
-        self.config.save_file(filename + '.cfg')
+        default_filename = self.ui.cmb_config.currentText()
+        filename = _QFileDialog.getSaveFileName(
+            self, caption='Open configuration file',
+            directory=default_filename, filter="Configuration files (*.cfg)")
+
+        if isinstance(filename, tuple):
+            filename = filename[0]
+
+        if len(filename) == 0:
+            return
+
+        self.config.save_file(filename)
         self.ui.cmb_config.addItem(filename)
 
     def list_config_files(self):

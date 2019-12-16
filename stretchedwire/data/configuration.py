@@ -10,36 +10,42 @@ from imautils.db.configuration import Configuration
 class StretchedWireConfig(Configuration):
     """Stretched Wire configuration parameters class."""
 
-    _label = 'Stretched Wire'
-    _db_table = 'configuration'
-    _db_dict = _collections.OrderedDict([
-        ('operator', {'column': 'operator', 'dtype': str,
+    label = 'Stretched Wire Configuration'
+    collection_name = 'configuration'
+    db_dict = _collections.OrderedDict([
+        ('idn', {'field': 'id', 'dtype': int, 'not_null': True}),
+        ('date', {'field': 'date', 'dtype': str, 'not_null': True}),
+        ('hour', {'field': 'hour', 'dtype': str, 'not_null': True}),
+        ('operator', {'field': 'operator', 'dtype': str,
                       'not_null': True}),
-        ('magnet_name', {'column': 'magnet_name', 'dtype': str,
+        ('magnet_name', {'field': 'magnet_name', 'dtype': str,
                          'not_null': True}),
-        ('axis', {'column': 'measurement_axis', 'dtype': str,
+        ('axis', {'field': 'measurement_axis', 'dtype': str,
                   'not_null': True}),
-        ('type', {'column': 'measurement_type', 'dtype': str,
+        ('type', {'field': 'measurement_type', 'dtype': str,
                   'not_null': True}),
-        ('comments', {'column': 'comments', 'dtype': str,
-                      'not_null': True}),
-        ('analysis_interval', {'column': 'analysis_interval', 'dtype': float,
+        ('comments', {'field': 'comments', 'dtype': str,
+                      'not_null': False}),
+        ('analysis_interval', {'field': 'analysis_interval', 'dtype': float,
                                'not_null': True}),
-        ('n_pts', {'column': 'integration_points', 'dtype': int,
+        ('n_pts', {'field': 'integration_points', 'dtype': int,
                              'not_null': True}),
-        ('gain', {'column': 'integrator_gain', 'dtype': int,
+        ('gain', {'field': 'integrator_gain', 'dtype': int,
                   'not_null': True}),
-        ('n_scans', {'column': 'n_scans', 'dtype': int,
+        ('n_scans', {'field': 'n_scans', 'dtype': int,
                      'not_null': True}),
-        ('ac', {'column': 'acceleration', 'dtype': float,
+        ('ac', {'field': 'acceleration', 'dtype': float,
                 'not_null': True}),
-        ('spdv', {'column': 'vertical_speed', 'dtype': float,
+        ('spdv', {'field': 'vertical_speed', 'dtype': float,
                   'not_null': True}),
-        ('spdh', {'column': 'horizontal_speed', 'dtype': float,
+        ('spdh', {'field': 'horizontal_speed', 'dtype': float,
                   'not_null': True}),
     ])
 
     def __init__(self):
+        self.idn = None
+        self.date = None
+        self.hour = None
         self.ppmac_ip = '10.0.28.51'
         self.fdi_bench = 3
         self.gain = 100
@@ -53,7 +59,8 @@ class StretchedWireConfig(Configuration):
         self.type = ''
         self.comments = ''
         self.analysis_interval = 0
-        self.n_scans = 1
+        self.n_scans = 1 
+        super().__init__()
 
     def motor_calculus(self):
         _counts_per_mm = 50000

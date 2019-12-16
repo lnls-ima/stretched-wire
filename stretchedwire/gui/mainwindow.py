@@ -60,3 +60,14 @@ class MainWindow(_QMainWindow):
             icon = _get_icon_path(tab_name)
             self.ui.twg_main_tab.addTab(tab, _QIcon(icon),
                                         tab_name.capitalize())
+
+    def closeEvent(self, event):
+        """Close main window and tabs."""
+        try:
+            for tab in self.tab_widgets:
+                tab.close()
+            event.accept()
+        except Exception:
+            _traceback.print_exc(file=_sys.stdout)
+            event.accept()
+
