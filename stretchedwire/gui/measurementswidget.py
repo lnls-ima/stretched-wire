@@ -43,7 +43,7 @@ class MeasurementsWidget(_QWidget):
         self.connect_signal_slots()
         
         # temporarily disabling measurement button
-        #self.ui.pbt_start_meas.setEnabled(False)
+        self.ui.pbt_start_meas.setEnabled(False)
 
     def closeEvent(self, event):
         """Close widget."""
