@@ -10,6 +10,18 @@
     <height>834</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1100</width>
+    <height>1100</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>Stretched Wire</string>
   </property>

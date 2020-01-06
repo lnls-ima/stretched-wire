@@ -26,19 +26,24 @@ class StretchedWireConfig(Configuration):
                   'not_null': True}),
         ('comments', {'field': 'comments', 'dtype': str,
                       'not_null': False}),
+        ('initial_pos', {'field': 'initial_pos', 'dtype': float,
+                               'not_null': True}),
+        ('final_pos', {'field': 'final_pos', 'dtype': float,
+                               'not_null': True}),
+        ('pts_dist', {'field': 'pts_dist', 'dtype': float,
+                               'not_null': True}),
         ('analysis_interval', {'field': 'analysis_interval', 'dtype': float,
                                'not_null': True}),
         ('n_pts', {'field': 'integration_points', 'dtype': int,
                              'not_null': True}),
-        ('gain', {'field': 'integrator_gain', 'dtype': int,
+        ('gain', {'field': 'integrator_gain', 'dtype': int, 'not_null': True}),
+        ('trig_source', {'field': 'trig_source', 'dtype': str,
+                         'not_null': True}),
+        ('n_scans', {'field': 'n_scans', 'dtype': int, 'not_null': True}),
+        ('ac', {'field': 'acceleration', 'dtype': float, 'not_null': True}),
+        ('spdv', {'field': 'vertical_speed', 'dtype': float, 
                   'not_null': True}),
-        ('n_scans', {'field': 'n_scans', 'dtype': int,
-                     'not_null': True}),
-        ('ac', {'field': 'acceleration', 'dtype': float,
-                'not_null': True}),
-        ('spdv', {'field': 'vertical_speed', 'dtype': float,
-                  'not_null': True}),
-        ('spdh', {'field': 'horizontal_speed', 'dtype': float,
+        ('spdh', {'field': 'horizontal_speed', 'dtype': float, 
                   'not_null': True}),
     ])
 
@@ -50,6 +55,7 @@ class StretchedWireConfig(Configuration):
         self.fdi_bench = 3
         self.gain = 100
         self.n_pts = 0
+        self.trig_source = 'External'
         self.ac = 0.5  # s
         self.spdv = 0.02  # mm/s
         self.spdh = 2  # mm/s
@@ -58,6 +64,9 @@ class StretchedWireConfig(Configuration):
         self.axis = ''
         self.type = ''
         self.comments = ''
+        self.initial_pos = 0
+        self.final_pos = 0
+        self.pts_dist = 0
         self.analysis_interval = 0
         self.n_scans = 1 
         super().__init__()

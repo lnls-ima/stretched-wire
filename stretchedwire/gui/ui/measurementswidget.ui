@@ -24,6 +24,69 @@
      <property name="verticalSpacing">
       <number>20</number>
      </property>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Points Distance (mm):</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0" rowspan="2">
+      <widget class="QLabel" name="label_9">
+       <property name="text">
+        <string>Initial Position (mm):</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1" rowspan="2" colspan="2">
+      <widget class="QLineEdit" name="le_init_pos">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="8" column="0" rowspan="3">
+      <widget class="QLabel" name="label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Save Configuration File:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="0">
+      <widget class="QLabel" name="label_11">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Comments:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QLabel" name="label_8">
+       <property name="text">
+        <string>Magnet:</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_7">
        <property name="text">
@@ -31,20 +94,53 @@
        </property>
       </widget>
      </item>
-     <item row="7" column="1" rowspan="2" colspan="3">
-      <widget class="QComboBox" name="cmb_config">
-       <property name="statusTip">
-        <string>Selecionar arquivo de configuração.</string>
+     <item row="0" column="1" colspan="2">
+      <widget class="QLineEdit" name="le_operator">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
        </property>
-       <property name="editable">
-        <bool>true</bool>
+       <property name="text">
+        <string/>
        </property>
-       <property name="insertPolicy">
-        <enum>QComboBox::NoInsert</enum>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
        </property>
       </widget>
      </item>
-     <item row="6" column="1" colspan="4">
+     <item row="4" column="0" rowspan="3">
+      <widget class="QLabel" name="label_20">
+       <property name="text">
+        <string>Measurement Type:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="3" rowspan="2">
+      <widget class="QLabel" name="label_12">
+       <property name="text">
+        <string>Final Position (mm):</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4" colspan="3">
+      <widget class="QLineEdit" name="le_magnet_name">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="1" colspan="6">
       <widget class="QTextEdit" name="te_meas_details">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
@@ -73,20 +169,70 @@ p, li { white-space: pre-wrap; }
        </property>
       </widget>
      </item>
-     <item row="7" column="0" rowspan="2">
-      <widget class="QLabel" name="label">
+     <item row="4" column="1" rowspan="3" colspan="6">
+      <widget class="QComboBox" name="cmb_meas_integral">
+       <item>
+        <property name="text">
+         <string>First Integral</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Second Integral</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="8" column="1" rowspan="3" colspan="5">
+      <widget class="QComboBox" name="cmb_config">
+       <property name="statusTip">
+        <string>Selecionar arquivo de configuração.</string>
+       </property>
+       <property name="editable">
+        <bool>true</bool>
+       </property>
+       <property name="insertPolicy">
+        <enum>QComboBox::NoInsert</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="4" rowspan="2" colspan="3">
+      <widget class="QLineEdit" name="le_final_pos">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Save Configuration File:</string>
+        <string>6</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
-     <item row="7" column="4" rowspan="2">
+     <item row="3" column="3">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Measurement Axis:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1" colspan="2">
+      <widget class="QLineEdit" name="le_pts_dist">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="8" column="6" rowspan="3">
       <widget class="QPushButton" name="pbt_save_config">
        <property name="enabled">
         <bool>true</bool>
@@ -118,96 +264,7 @@ p, li { white-space: pre-wrap; }
        </property>
       </widget>
      </item>
-     <item row="6" column="0">
-      <widget class="QLabel" name="label_11">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>Comments:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1" colspan="2">
-      <widget class="QLineEdit" name="le_operator">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QLabel" name="label_8">
-       <property name="text">
-        <string>Magnet:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="4">
-      <widget class="QLineEdit" name="le_magnet_name">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0" rowspan="2">
-      <widget class="QLabel" name="label_9">
-       <property name="text">
-        <string>Measurement Distance (mm):</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1" rowspan="2" colspan="2">
-      <widget class="QLineEdit" name="le_motor_meas_dist">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>6</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="3" rowspan="2">
-      <widget class="QLabel" name="label_12">
-       <property name="text">
-        <string>Measurement Axis:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0" rowspan="3">
-      <widget class="QLabel" name="label_20">
-       <property name="text">
-        <string>Measurement:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="4" rowspan="2">
+     <item row="3" column="4">
       <widget class="QComboBox" name="cmb_meas_axis">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -223,20 +280,6 @@ p, li { white-space: pre-wrap; }
        <item>
         <property name="text">
          <string>Y</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item row="3" column="1" rowspan="3" colspan="4">
-      <widget class="QComboBox" name="cmb_meas_integral">
-       <item>
-        <property name="text">
-         <string>First Integral</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Second Integral</string>
         </property>
        </item>
       </widget>

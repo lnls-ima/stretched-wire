@@ -38,12 +38,9 @@ class MeasurementsWidget(_QWidget):
         self.meas = _meas
 
         self.list_config_files()
-        
+
         # connect signals and slots
         self.connect_signal_slots()
-        
-        # temporarily disabling measurement button
-        self.ui.pbt_start_meas.setEnabled(False)
 
     def closeEvent(self, event):
         """Close widget."""
@@ -65,8 +62,20 @@ class MeasurementsWidget(_QWidget):
         """Starts a new measurement."""
         self.stop = False
         self.update_config()
-        self.mint.start_measurement()
         self.config.meas_calculus()
+        self.mdriver.cfg_measurement(self.config.analysis_interval,
+                                     self.config.ac, self.config.n_scans)
+        self.mdriver.cfg_trigger_signal(self.config.initial_pos,
+                                        self.config.pts_dist)
+        if self.config.analysis_interval > 0:
+            self.mdriver.axis_move(self.config.axis, (self.config.initial_pos
+                                   - self.config.pts_dist))
+        else:
+            self.mdriver.axis_move(self.config.axis, (self.config.initial_pos
+                                   + self.config.pts_dist))
+
+        self.mint.start_measurement()
+        _time.sleep(500)
         self.mdriver.run_motion_prog(self.config.type, self.config.axis)
 
         # start collecting data
@@ -131,16 +140,12 @@ class MeasurementsWidget(_QWidget):
         if filename != '':
             self.config.read_file(filename)
 
-        # self.ui.le_motor_acceleration.setText(str(self.config.ac))
-        # self.ui.le_motor_vspeed.setText(str(self.config.spdv))
-        # self.ui.le_motor_hspeed.setText(str(self.config.spdh))
-        # self.ui.cmb_integrator_gain.setCurrentText(str(self.config.gain))
-        # self.ui.cmb_integration_pts.setCurrentText(str(self.config.n_pts))
-
         self.ui.le_operator.setText(self.config.operator)
         self.ui.le_magnet_name.setText(self.config.magnet_name)
         self.ui.cmb_meas_axis.setCurrentText(self.config.axis)
-        self.ui.le_motor_meas_dist.setText(str(self.config.analysis_interval))
+        self.ui.le_init_pos.setText(str(self.config.initial_pos))
+        self.ui.le_final_pos.setText(str(self.config.final_pos))
+        self.ui.le_pts_dist.setText(str(self.config.pts_dist))
         self.ui.cmb_meas_integral.setCurrentText(self.config.type)
         self.ui.te_meas_details.setText(self.config.comments)
 
@@ -177,7 +182,12 @@ class MeasurementsWidget(_QWidget):
         self.config.magnet_name = self.ui.le_magnet_name.text().upper()
         self.config.operator = self.ui.le_operator.text()
         self.config.axis = self.ui.cmb_meas_axis.currentText()
-        self.config.analysis_interval = float(
-            self.ui.le_motor_meas_dist.text())
+        self.config.initial_pos = float(self.ui.le_init_pos.text())
+        self.config.final_pos = float(self.ui.le_final_pos.text())
+        self.config.analysis_interval = (self.config.final_pos
+                                         - self.config.initial_pos)
+        self.config.pts_dist = float(self.ui.le_pts_dist.text())
+        self.config.n_pts = (self.config.analysis_interval /
+                             self.config.pts_dist)
         self.config.type = self.ui.cmb_meas_integral.currentText()
         self.config.comments = self.ui.te_meas_details.toPlainText()

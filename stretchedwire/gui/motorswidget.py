@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Motor and Integrator Widget."""
+"""Motors Widget."""
 
 from qtpy.QtWidgets import (
     QWidget as _QWidget,
@@ -7,14 +7,18 @@ from qtpy.QtWidgets import (
     )
 import qtpy.uic as _uic
 
+import os as _os
+import sys as _sys
+import traceback as _traceback
+import collections as _collections
+
 from stretchedwire.gui.utils import get_ui_file as _get_ui_file
 from stretchedwire.devices import ppmac as _mdriver
-from stretchedwire.devices import fdi as _mint
 from stretchedwire.data import config as _config
 
 
-class MotorandIntegratorWidget(_QWidget):
-    """Motor and Integrator Widget class."""
+class MotorsWidget(_QWidget):
+    """Motors Widget class."""
 
     def __init__(self, parent=None):
         """Set up the ui."""
@@ -24,30 +28,50 @@ class MotorandIntegratorWidget(_QWidget):
         uifile = _get_ui_file(self)
         self.ui = _uic.loadUi(uifile, self)
 
-        self.mdriver = _mdriver
-        self.mint = _mint
         self.config = _config
+        self.mdriver = _mdriver
 
         # connect signals and slots
         self.connect_signal_slots()
 
     def connect_signal_slots(self):
         """Create signal and slot connections."""
+        self.ui.pbt_config_motor.clicked.connect(self.config_motor)
         self.ui.pbt_encoder_reading.clicked.connect(self.read_encoder)
         self.ui.pbt_home.clicked.connect(self.home)
-
         self.ui.pbt_move_motor.clicked.connect(self.start_motor)
         self.ui.pbt_stop_motor.clicked.connect(self.stop_motor)
-
         self.ui.pbt_move_axis.clicked.connect(self.start_axis)
         self.ui.pbt_stop_axis.clicked.connect(self.stop_motor)
-
-        self.ui.pbt_status_update.clicked.connect(self.status_update)
-
         self.ui.tbt_home_1.clicked.connect(lambda: self.home_position(1))
         self.ui.tbt_home_2.clicked.connect(lambda: self.home_position(2))
         self.ui.tbt_home_3.clicked.connect(lambda: self.home_position(3))
         self.ui.tbt_home_4.clicked.connect(lambda: self.home_position(4))
+
+    def config_motor(self):
+        """Configures all motors acceleration and speed."""
+        try:
+            self.update_config()
+            self.mdriver.cfg_motor(1, self.config.m_ac, self.config.m_spdh)
+            self.mdriver.cfg_motor(2, self.config.m_ac, self.config.m_spdv)
+            self.mdriver.cfg_motor(3, self.config.m_ac, self.config.m_spdh)
+            self.mdriver.cfg_motor(4, self.config.m_ac, self.config.m_spdv)
+            _QMessageBox.information(self, 'Information',
+                                     'Motors configured successfully!',
+                                     _QMessageBox.Ok)
+
+        except Exception:
+            _traceback.print_exc(file=_sys.stdout)
+            _QMessageBox.warning(self, 'Warning',
+                                 'Could not configure the motor.\n'
+                                 'Please, check the inputs.',
+                                 _QMessageBox.Ok)
+
+    def update_config(self):
+        self.config.ac = float(self.ui.le_motor_acceleration.text())
+        self.config.spdv = float(self.ui.le_motor_vspeed.text())
+        self.config.spdh = float(self.ui.le_motor_hspeed.text())
+        self.config.motor_calculus()
 
     def read_encoder(self):
         """Reads all encoders positions and status from ppmac."""
@@ -97,16 +121,6 @@ class MotorandIntegratorWidget(_QWidget):
     def home_position(self, motor):
         """Jog the motor to the home position."""
         self.mdriver.absolute_move(motor, 0)
-
-    def status_update(self):
-        """Updates integrator status on UI."""
-        try:
-            self.ui.la_status_1.setText(self.mint.status(0))
-            self.ui.la_status_2.setText(self.mint.status(1))
-            self.ui.la_status_3.setText(self.mint.status(2))
-            self.ui.la_status_4.setText(self.mint.status(3))
-        except Exception:
-            pass
 
     def start_axis(self):
         """Executes an axis jog move."""

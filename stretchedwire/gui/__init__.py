@@ -2,8 +2,8 @@
 
 from . import stretchedwireapp
 from . import connectionwidget
-from . import mainsettingswidget
-from . import motorandintegratorwidget
+from . import motorswidget
+from . import integratorwidget
 from . import measurementswidget
 from . import resultswidget
 from . import mainwindow

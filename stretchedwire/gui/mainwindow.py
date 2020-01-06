@@ -5,17 +5,18 @@ from qtpy.QtWidgets import (
     QMainWindow as _QMainWindow,
     )
 from qtpy.QtGui import QIcon as _QIcon
-
+import sys as _sys
+import traceback as _traceback
 import qtpy.uic as _uic
 
 from stretchedwire.gui.utils import get_ui_file as _get_ui_file
 from stretchedwire.gui.utils import get_icon_path as _get_icon_path
 from stretchedwire.gui.connectionwidget \
  import ConnectionWidget as _ConnectionWidget
-from stretchedwire.gui.mainsettingswidget \
- import MainSettingsWidget as _MainSettingsWidget
-from stretchedwire.gui.motorandintegratorwidget \
- import MotorandIntegratorWidget as _MotorandIntegratorWidget
+from stretchedwire.gui.motorswidget \
+ import MotorsWidget as _MotorsWidget
+from stretchedwire.gui.integratorwidget \
+ import IntegratorWidget as _IntegratorWidget
 from stretchedwire.gui.measurementswidget \
  import MeasurementsWidget as _MeasurementsWidget
 from stretchedwire.gui.resultswidget \
@@ -37,16 +38,16 @@ class MainWindow(_QMainWindow):
         # define tab names and corresponding widgets
         self.tab_names = [
             'Connection',
-            'Main Settings',
-            'Motor and Integrator',
+            'Motors',
+            'Integrator',
             'Measurements',
             'Results',
             ]
 
         self.tab_widgets = [
             _ConnectionWidget(),
-            _MainSettingsWidget(),
-            _MotorandIntegratorWidget(),
+            _MotorsWidget(),
+            _IntegratorWidget(),
             _MeasurementsWidget(),
             _ResultsWidget(),
             ]
@@ -70,4 +71,3 @@ class MainWindow(_QMainWindow):
         except Exception:
             _traceback.print_exc(file=_sys.stdout)
             event.accept()
-
