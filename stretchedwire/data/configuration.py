@@ -27,23 +27,23 @@ class StretchedWireConfig(Configuration):
         ('comments', {'field': 'comments', 'dtype': str,
                       'not_null': False}),
         ('initial_pos', {'field': 'initial_pos', 'dtype': float,
-                               'not_null': True}),
+                         'not_null': True}),
         ('final_pos', {'field': 'final_pos', 'dtype': float,
-                               'not_null': True}),
+                       'not_null': True}),
         ('pts_dist', {'field': 'pts_dist', 'dtype': float,
                                'not_null': True}),
         ('analysis_interval', {'field': 'analysis_interval', 'dtype': float,
                                'not_null': True}),
         ('n_pts', {'field': 'integration_points', 'dtype': int,
-                             'not_null': True}),
+                            'not_null': True}),
         ('gain', {'field': 'integrator_gain', 'dtype': int, 'not_null': True}),
         ('trig_source', {'field': 'trig_source', 'dtype': str,
                          'not_null': True}),
         ('n_scans', {'field': 'n_scans', 'dtype': int, 'not_null': True}),
         ('ac', {'field': 'acceleration', 'dtype': float, 'not_null': True}),
-        ('spdv', {'field': 'vertical_speed', 'dtype': float, 
+        ('spdv', {'field': 'vertical_speed', 'dtype': float,
                   'not_null': True}),
-        ('spdh', {'field': 'horizontal_speed', 'dtype': float, 
+        ('spdh', {'field': 'horizontal_speed', 'dtype': float,
                   'not_null': True}),
     ])
 
@@ -51,7 +51,7 @@ class StretchedWireConfig(Configuration):
         self.idn = None
         self.date = None
         self.hour = None
-        self.ppmac_ip = '10.0.28.51'
+        self.ppmac_ip = '10.0.28.39'
         self.fdi_bench = 3
         self.gain = 100
         self.n_pts = 0
@@ -68,7 +68,7 @@ class StretchedWireConfig(Configuration):
         self.final_pos = 0
         self.pts_dist = 0
         self.analysis_interval = 0
-        self.n_scans = 1 
+        self.n_scans = 1
         super().__init__()
 
     def motor_calculus(self):

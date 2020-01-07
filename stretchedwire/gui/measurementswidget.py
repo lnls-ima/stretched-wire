@@ -81,7 +81,7 @@ class MeasurementsWidget(_QWidget):
         # start collecting data
         _time0 = _time.time()
         _count = self.mint.get_data_count()
-        while ((_count != self.config.n_pts) and (self.stop is False)):
+        while ((_count != self.config.n_pts-1) and (self.stop is False)):
             _count = self.mint.get_data_count()
             if (_time.time() - _time0) > self.config.time_limit:
                 _QMessageBox.warning(self, 'Warning', 'Timeout while '
@@ -109,7 +109,7 @@ class MeasurementsWidget(_QWidget):
             try:
                 _tmp = self.meas.raw_curve.reshape(
                     self.config.n_scans,
-                    self.config.n_pts).transpose()
+                    self.config.n_pts-1).transpose()
             except Exception:
                 _traceback.print_exc(file=_sys.stdout)
                 return

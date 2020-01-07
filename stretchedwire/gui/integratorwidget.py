@@ -15,6 +15,7 @@ import qtpy.uic as _uic
 from stretchedwire.gui.utils import get_ui_file as _get_ui_file
 from stretchedwire.devices import fdi as _mint
 from stretchedwire.data import config as _config
+from stretchedwire.data import meas as _meas
 
 
 class IntegratorWidget(_QWidget):
@@ -30,6 +31,7 @@ class IntegratorWidget(_QWidget):
 
         self.mint = _mint
         self.config = _config
+        self.meas = _meas
 
         # connect signals and slots
         self.connect_signal_slots()
@@ -65,13 +67,13 @@ class IntegratorWidget(_QWidget):
         _pts = round(_total_time / (1/_rate))
         _time_limit = 2 * _total_time
 
-        self.mint.config_trig_tim(_rate, _pts)
+        self.mint.config_trig_timer(_rate, _pts)
         self.mint.start_measurement()
 
         # start collecting data
         _time0 = _time.time()
         _count = self.mint.get_data_count()
-        while ((_count != _pts) and (self.stop is False)):
+        while ((_count != _pts-1) and (self.stop is False)):
             _count = self.mint.get_data_count()
             if (_time.time() - _time0) > _time_limit:
                 _QMessageBox.warning(self, 'Warning', 'Timeout while '
@@ -99,7 +101,7 @@ class IntegratorWidget(_QWidget):
             try:
                 _tmp = self.meas.raw_curve.reshape(
                     self.config.n_scans,
-                    _pts).transpose()
+                    _pts-1).transpose()
             except Exception:
                 _traceback.print_exc(file=_sys.stdout)
                 return
@@ -137,7 +139,7 @@ class IntegratorWidget(_QWidget):
 
     def update_config(self):
         self.config.gain = int(self.ui.cmb_integrator_gain.currentText())
-        self.config.trig_source = self.ui.cmb.trigger_source.currentText()
+        self.config.trig_source = self.ui.cmb_trigger_source.currentText()
         if self.config.trig_source == "Timer":
             self.ui.gb_timer.setEnabled(True)
         else:
