@@ -1,8 +1,6 @@
 """Stretched Wire measurements module."""
 
-import sys as _sys
 import numpy as _np
-import traceback as _traceback
 import collections as _collections
 from imautils.db.configuration import Configuration
 
