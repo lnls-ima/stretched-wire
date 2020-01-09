@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 """Results Widget."""
 
-import sys as _sys
 import numpy as _np
-import traceback as _traceback
 from qtpy.QtWidgets import (
     QWidget as _QWidget,
     QMessageBox as _QMessageBox,

@@ -9,7 +9,6 @@ from stretchedwire.devices import fdi as _mint
 from stretchedwire.data import config as _config
 
 from stretchedwire.gui.utils import get_ui_file as _get_ui_file
-from stretchedwire.gui.utils import get_icon_path as _get_icon_path
 
 
 class ConnectionWidget(_QWidget):

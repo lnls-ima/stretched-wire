@@ -63,10 +63,12 @@ class MeasurementsWidget(_QWidget):
         self.stop = False
         self.update_config()
         self.config.meas_calculus()
-        self.mdriver.cfg_measurement(self.config.analysis_interval,
-                                     self.config.ac, self.config.n_scans)
+        self.mdriver.cfg_measurement_type(self.config.type)
+        self.mdriver.cfg_measurement(self.config.final_pos,
+                                     self.config.m_ac, self.config.n_scans)
         self.mdriver.cfg_trigger_signal(self.config.initial_pos,
                                         self.config.pts_dist)
+
         if self.config.analysis_interval > 0:
             self.mdriver.axis_move(self.config.axis, (self.config.initial_pos
                                    - self.config.pts_dist))
@@ -74,8 +76,24 @@ class MeasurementsWidget(_QWidget):
             self.mdriver.axis_move(self.config.axis, (self.config.initial_pos
                                    + self.config.pts_dist))
 
+        if self.config.axis == 'X':
+            while(not(self.mdriver.in_position(1))):
+                pass
+        else:
+            while(not(self.mdriver.in_position(2))):
+                pass
+
+        self.ui.gv_rawcurves.plotItem.curves.clear()
+        self.ui.gv_rawcurves.clear()
+        self.ui.gv_rawcurves.plotItem.setLabel(
+            'left', "Amplitude", units="V.s")
+        self.ui.gv_rawcurves.plotItem.setLabel(
+            'bottom', "Position", units='mm')
+        self.ui.gv_rawcurves.plotItem.showGrid(
+            x=True, y=True, alpha=0.2)
+
+        self.mint.config_trig_external(self.config.n_pts)
         self.mint.start_measurement()
-        _time.sleep(500)
         self.mdriver.run_motion_prog(self.config.type, self.config.axis)
 
         # start collecting data
@@ -83,6 +101,8 @@ class MeasurementsWidget(_QWidget):
         _count = self.mint.get_data_count()
         while ((_count != self.config.n_pts-1) and (self.stop is False)):
             _count = self.mint.get_data_count()
+            self.ui.lcd_pos.display(
+                self.mdriver.get_position(self.config.axis))
             if (_time.time() - _time0) > self.config.time_limit:
                 _QMessageBox.warning(self, 'Warning', 'Timeout while '
                                      'waiting for integrator data.',
@@ -114,19 +134,12 @@ class MeasurementsWidget(_QWidget):
                 _traceback.print_exc(file=_sys.stdout)
                 return
 
-            self.ui.gv_rawcurves.plotItem.curves.clear()
-            self.ui.gv_rawcurves.clear()
-            self.ui.gv_rawcurves.plotItem.setLabel(
-                'left', "Amplitude", units="V.s")
-            self.ui.gv_rawcurves.plotItem.setLabel(
-                'bottom', "Points")
-            self.ui.gv_rawcurves.plotItem.showGrid(
-                x=True, y=True, alpha=0.2)
-
-            px = _np.linspace(0, len(self.meas.raw_curve)-1,
-                              len(self.meas.raw_curve))
+#            px = _np.linspace(0, len(self.meas.raw_curve)-1,
+#                              len(self.meas.raw_curve))
+            px = _np.linspace(self.config.initial_pos, self.config.final_pos,
+                              self.config.n_pts-1)
             self.ui.gv_rawcurves.plotItem.plot(
-                px, self.meas.raw_curve, pen=(255, 0, 0), symbol=None)
+                px, self.meas.raw_curve, pen=(0, 0, 0), width=3, symbol=None)
 
     def stop_meas(self):
         """Aborts measurement."""
@@ -187,7 +200,7 @@ class MeasurementsWidget(_QWidget):
         self.config.analysis_interval = (self.config.final_pos
                                          - self.config.initial_pos)
         self.config.pts_dist = float(self.ui.le_pts_dist.text())
-        self.config.n_pts = (self.config.analysis_interval /
-                             self.config.pts_dist)
+        self.config.n_pts = int(self.config.analysis_interval /
+                                self.config.pts_dist)
         self.config.type = self.ui.cmb_meas_integral.currentText()
         self.config.comments = self.ui.te_meas_details.toPlainText()

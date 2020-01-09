@@ -7,10 +7,8 @@ from qtpy.QtWidgets import (
     )
 import qtpy.uic as _uic
 
-import os as _os
 import sys as _sys
 import traceback as _traceback
-import collections as _collections
 
 from stretchedwire.gui.utils import get_ui_file as _get_ui_file
 from stretchedwire.devices import ppmac as _mdriver

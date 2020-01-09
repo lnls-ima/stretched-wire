@@ -62,13 +62,23 @@ class IntegratorWidget(_QWidget):
 
     def measure(self):
         """Do a zero movement measurement with timer source trigger."""
-        _total_time = int(self.ui.le_meas_time.text())
-        _rate = int(self.ui.le_timer_rate.text())
+        _total_time = float(self.ui.le_meas_time.text())
+        _rate = float(self.ui.le_timer_rate.text())
         _pts = round(_total_time / (1/_rate))
         _time_limit = 2 * _total_time
 
         self.mint.config_trig_timer(_rate, _pts)
         self.mint.start_measurement()
+        self.stop = False
+
+        self.ui.gv_rawcurves_tim.plotItem.curves.clear()
+        self.ui.gv_rawcurves_tim.clear()
+        self.ui.gv_rawcurves_tim.plotItem.setLabel(
+            'left', "Amplitude", units="V.s")
+        self.ui.gv_rawcurves_tim.plotItem.setLabel(
+            'bottom', "Points")
+        self.ui.gv_rawcurves_tim.plotItem.showGrid(
+            x=True, y=True, alpha=0.2)
 
         # start collecting data
         _time0 = _time.time()
@@ -105,15 +115,6 @@ class IntegratorWidget(_QWidget):
             except Exception:
                 _traceback.print_exc(file=_sys.stdout)
                 return
-
-            self.ui.gv_rawcurves_tim.plotItem.curves.clear()
-            self.ui.gv_rawcurves_tim.clear()
-            self.ui.gv_rawcurves_tim.plotItem.setLabel(
-                'left', "Amplitude", units="V.s")
-            self.ui.gv_rawcurves_tim.plotItem.setLabel(
-                'bottom', "Points")
-            self.ui.gv_rawcurves_tim.plotItem.showGrid(
-                x=True, y=True, alpha=0.2)
 
             px = _np.linspace(0, len(self.meas.raw_curve)-1,
                               len(self.meas.raw_curve))

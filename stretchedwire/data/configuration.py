@@ -1,8 +1,5 @@
 """Stretched Wire configuration module."""
 
-import sys as _sys
-import numpy as _np
-import traceback as _traceback
 import collections as _collections
 from imautils.db.configuration import Configuration
 
@@ -35,7 +32,7 @@ class StretchedWireConfig(Configuration):
         ('analysis_interval', {'field': 'analysis_interval', 'dtype': float,
                                'not_null': True}),
         ('n_pts', {'field': 'integration_points', 'dtype': int,
-                            'not_null': True}),
+                   'not_null': True}),
         ('gain', {'field': 'integrator_gain', 'dtype': int, 'not_null': True}),
         ('trig_source', {'field': 'trig_source', 'dtype': str,
                          'not_null': True}),
