@@ -7,6 +7,7 @@ from imautils.db.configuration import Configuration
 class StretchedWireConfig(Configuration):
     """Stretched Wire configuration parameters class."""
 
+    mongo = False
     label = 'Stretched Wire Configuration'
     collection_name = 'configuration'
     db_dict = _collections.OrderedDict([
@@ -17,18 +18,22 @@ class StretchedWireConfig(Configuration):
                       'not_null': True}),
         ('magnet_name', {'field': 'magnet_name', 'dtype': str,
                          'not_null': True}),
-        ('axis', {'field': 'measurement_axis', 'dtype': str,
-                  'not_null': True}),
+        ('axis1', {'field': 'measurement_axis1', 'dtype': str,
+                   'not_null': True}),
         ('type', {'field': 'measurement_type', 'dtype': str,
                   'not_null': True}),
         ('comments', {'field': 'comments', 'dtype': str,
                       'not_null': False}),
-        ('initial_pos', {'field': 'initial_pos', 'dtype': float,
-                         'not_null': True}),
-        ('final_pos', {'field': 'final_pos', 'dtype': float,
-                       'not_null': True}),
-        ('pts_dist', {'field': 'pts_dist', 'dtype': float,
-                               'not_null': True}),
+        ('start', {'field': 'start', 'dtype': float,
+                   'not_null': True}),
+        ('end', {'field': 'end', 'dtype': float,
+                 'not_null': True}),
+        ('step', {'field': 'step', 'dtype': float,
+                  'not_null': True}),
+        ('extra', {'field': 'extra', 'dtype': float,
+                   'not_null': True}),
+        ('vel', {'field': 'vel', 'dtype': float,
+                 'not_null': True}),
         ('analysis_interval', {'field': 'analysis_interval', 'dtype': float,
                                'not_null': True}),
         ('n_pts', {'field': 'integration_points', 'dtype': int,
@@ -42,6 +47,14 @@ class StretchedWireConfig(Configuration):
                   'not_null': True}),
         ('spdh', {'field': 'horizontal_speed', 'dtype': float,
                   'not_null': True}),
+        ('limit_min_X', {'field': 'limit_min_X', 'dtype': float,
+                         'not_null': False}),
+        ('limit_max_X', {'field': 'limit_max_X', 'dtype': float,
+                         'not_null': False}),
+        ('limit_min_Y', {'field': 'limit_min_Y', 'dtype': float,
+                         'not_null': False}),
+        ('limit_max_Y', {'field': 'limit_max_Y', 'dtype': float,
+                         'not_null': False}),
     ])
 
     def __init__(self):
@@ -58,14 +71,21 @@ class StretchedWireConfig(Configuration):
         self.spdh = 2  # mm/s
         self.operator = ''
         self.magnet_name = ''
-        self.axis = ''
+        self.axis1 = ''
+        self.axis2 = ''
         self.type = ''
         self.comments = ''
-        self.initial_pos = 0
-        self.final_pos = 0
-        self.pts_dist = 0
+        self.start = 0
+        self.end = 0
+        self.step = 0
+        self.extra = 0
+        self.vel = 0
         self.analysis_interval = 0
         self.n_scans = 1
+        self.limit_min_X = None
+        self.limit_max_X = None
+        self.limit_min_Y = None
+        self.limit_max_Y = None
         super().__init__()
 
     def motor_calculus(self):
@@ -75,9 +95,9 @@ class StretchedWireConfig(Configuration):
         self.m_spdh = self.spdh * _counts_per_mm * 0.001  # counts/ms
 
     def meas_calculus(self):
-        if self.axis == 'X':
+        if self.axis1 == 'X':
             _spd = self.spdh
         else:
             _spd = self.spdv
 
-        self.time_limit = 2 * self.analysis_interval/_spd
+        self.time_limit = (2 * abs(self.analysis_interval/_spd)) + 2

@@ -35,8 +35,11 @@ class MotorsWidget(_QWidget):
     def connect_signal_slots(self):
         """Create signal and slot connections."""
         self.ui.pbt_config_motor.clicked.connect(self.config_motor)
-        self.ui.pbt_encoder_reading.clicked.connect(self.read_encoder)
+        self.ui.pbt_set_limits.clicked.connect(self.set_limits)
+        self.ui.pbt_reset_limits.clicked.connect(self.reset_limits)
+        self.ui.pbt_homez.clicked.connect(self.homez)
         self.ui.pbt_home.clicked.connect(self.home)
+        self.ui.pbt_kill.clicked.connect(self.kill)
         self.ui.pbt_move_motor.clicked.connect(self.start_motor)
         self.ui.pbt_stop_motor.clicked.connect(self.stop_motor)
         self.ui.pbt_move_axis.clicked.connect(self.start_axis)
@@ -45,6 +48,10 @@ class MotorsWidget(_QWidget):
         self.ui.tbt_home_2.clicked.connect(lambda: self.home_position(2))
         self.ui.tbt_home_3.clicked.connect(lambda: self.home_position(3))
         self.ui.tbt_home_4.clicked.connect(lambda: self.home_position(4))
+        self.ui.tbt_read_1.clicked.connect(lambda: self.read(1))
+        self.ui.tbt_read_2.clicked.connect(lambda: self.read(2))
+        self.ui.tbt_read_3.clicked.connect(lambda: self.read(3))
+        self.ui.tbt_read_4.clicked.connect(lambda: self.read(4))
 
     def config_motor(self):
         """Configures all motors acceleration and speed."""
@@ -71,50 +78,77 @@ class MotorsWidget(_QWidget):
         self.config.spdh = float(self.ui.le_motor_hspeed.text())
         self.config.motor_calculus()
 
-    def read_encoder(self):
+    def set_limits(self):
+        """Set positions limits."""
+        try:
+            if self.ui.le_limit_min_X.text() == '':
+                self.config.limit_min_X = None
+            else:
+                self.config.limit_min_X = float(self.ui.le_limit_min_X.text())
+            if self.ui.le_limit_max_X.text() == '':
+                self.config.limit_max_X = None
+            else:
+                self.config.limit_max_X = float(self.ui.le_limit_max_X.text())
+            if self.ui.le_limit_min_Y.text() == '':
+                self.config.limit_min_Y = None
+            else:
+                self.config.limit_min_Y = float(self.ui.le_limit_min_Y.text())
+            if self.ui.le_limit_max_Y.text() == '':
+                self.config.limit_max_Y = None
+            else:
+                self.config.limit_max_Y = float(self.ui.le_limit_max_Y.text())
+            _QMessageBox.information(self, 'Information',
+                                     'Limits configured successfully!',
+                                     _QMessageBox.Ok)
+        except Exception:
+            _traceback.print_exc(file=_sys.stdout)
+            _QMessageBox.warning(self, 'Warning',
+                                 'Could not configure the limits.\n'
+                                 'Please, check the inputs.',
+                                 _QMessageBox.Ok)
+
+    def reset_limits(self):
+        """Reset positions limits. Set no limits."""
+        self.ui.le_limit_min_X.setText('')
+        self.ui.le_limit_max_X.setText('')
+        self.ui.le_limit_min_Y.setText('')
+        self.ui.le_limit_max_Y.setText('')
+        self.config.limit_min_X = None
+        self.config.limit_max_X = None
+        self.config.limit_min_Y = None
+        self.config.limit_max_Y = None
+
+    def read(self, motor):
         """Reads all encoders positions and status from ppmac."""
-        self.ui.le_encoder_reading_1.setText(
-            str(self.mdriver.read_encoder(1)))
-        self.ui.le_encoder_reading_2.setText(
-            str(self.mdriver.read_encoder(2)))
-        self.ui.le_encoder_reading_3.setText(
-            str(self.mdriver.read_encoder(3)))
-        self.ui.le_encoder_reading_4.setText(
-            str(self.mdriver.read_encoder(4)))
-
-        self.ui.signal_reverse_ls_1.setEnabled(
-            int(self.mdriver.get_value('Motor[1].MinusLimit')))
-        self.ui.signal_forward_ls_1.setEnabled(
-            int(self.mdriver.get_value('Motor[1].PlusLimit')))
-        self.ui.signal_reverse_ls_2.setEnabled(
-            int(self.mdriver.get_value('Motor[2].MinusLimit')))
-        self.ui.signal_forward_ls_2.setEnabled(
-            int(self.mdriver.get_value('Motor[2].PlusLimit')))
-        self.ui.signal_reverse_ls_3.setEnabled(
-            int(self.mdriver.get_value('Motor[3].MinusLimit')))
-        self.ui.signal_forward_ls_3.setEnabled(
-            int(self.mdriver.get_value('Motor[3].PlusLimit')))
-        self.ui.signal_reverse_ls_4.setEnabled(
-            int(self.mdriver.get_value('Motor[4].MinusLimit')))
-        self.ui.signal_forward_ls_4.setEnabled(
-            int(self.mdriver.get_value('Motor[4].PlusLimit')))
-
-        self.ui.tbt_home_1.setEnabled(
-            int(self.mdriver.get_value('Motor[1].HomeComplete')))
-        self.ui.tbt_home_2.setEnabled(
-            int(self.mdriver.get_value('Motor[2].HomeComplete')))
-        self.ui.tbt_home_3.setEnabled(
-            int(self.mdriver.get_value('Motor[3].HomeComplete')))
-        self.ui.tbt_home_4.setEnabled(
-            int(self.mdriver.get_value('Motor[4].HomeComplete')))
+        getattr(self.ui, 'le_encoder_reading_' + str(motor)).setText(
+            str(self.mdriver.read_encoder(motor)))
+        getattr(self.ui, 'signal_reverse_ls_' + str(motor)).setEnabled(
+            int(self.mdriver.get_value(
+                'Motor[' + str(motor) + '].MinusLimit')))
+        getattr(self.ui, 'signal_forward_ls_' + str(motor)).setEnabled(
+            int(self.mdriver.get_value(
+                'Motor[' + str(motor) + '].PlusLimit')))
+        getattr(self.ui, 'tbt_home_' + str(motor)).setEnabled(
+            int(self.mdriver.get_value(
+                'Motor[' + str(motor) + '].HomeComplete')))
 
     def home(self):
-        """Home all motors."""
-        self.mdriver.home(1)
-        self.mdriver.home(2)
-        self.mdriver.home(3)
-        self.mdriver.home(4)
-        self.read_encoder()
+        """Home."""
+        for m in [1, 2, 3, 4]:
+            if getattr(self.ui, 'chb_motor_' + str(m)).isChecked():
+                self.mdriver.home(m)
+
+    def homez(self):
+        """Zero-move homing."""
+        for m in [1, 2, 3, 4]:
+            if getattr(self.ui, 'chb_motor_' + str(m)).isChecked():
+                self.mdriver.homez(m)
+
+    def kill(self):
+        """Kill all motors outputs."""
+        for m in [1, 2, 3, 4]:
+            if getattr(self.ui, 'chb_motor_' + str(m)).isChecked():
+                self.mdriver.kill(m)
 
     def home_position(self, motor):
         """Jog the motor to the home position."""
@@ -123,14 +157,34 @@ class MotorsWidget(_QWidget):
     def start_axis(self):
         """Executes an axis jog move."""
         _axis = self.ui.cmb_axis.currentText()
-        _dist = float(self.ui.le_axis_dist.text())
-        self.mdriver.axis_move(_axis, _dist)
+        _pos = float(self.ui.le_axis_dist.text())
+        _min_limit = getattr(self.config, 'limit_min_' + _axis)
+        _max_limit = getattr(self.config, 'limit_max_' + _axis)
+        if ((_min_limit is not None and _pos < _min_limit) or (
+                _max_limit is not None and _pos > _max_limit)):
+            _QMessageBox.warning(self, 'Warning',
+                                 'Position off limits.',
+                                 _QMessageBox.Ok)
+            return
+        self.mdriver.axis_move(_axis, _pos)
 
     def start_motor(self):
         """Executes a motor jog move."""
         _motor = int(self.ui.cmb_motor.currentText())
-        _dist = float(self.ui.le_motor_dist.text())
-        self.mdriver.relative_move(_motor, _dist)
+        _pos = float(self.ui.le_motor_dist.text())
+        if _motor == 1 or _motor == 3:
+            _axis = 'X'
+        else:
+            _axis = 'Y'
+        _min_limit = getattr(self.config, 'limit_min_' + _axis)
+        _max_limit = getattr(self.config, 'limit_max_' + _axis)
+        if ((_min_limit is not None and _pos < _min_limit) or (
+                _max_limit is not None and _pos > _max_limit)):
+            _QMessageBox.warning(self, 'Warning',
+                                 'Position off limits.',
+                                 _QMessageBox.Ok)
+            return
+        self.mdriver.absolute_move(_motor, _pos)
 
     def stop_motor(self):
         """Stops all motors."""

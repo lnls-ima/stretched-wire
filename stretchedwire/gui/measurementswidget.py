@@ -57,26 +57,49 @@ class MeasurementsWidget(_QWidget):
         self.ui.pbt_stop_meas.clicked.connect(self.stop_meas)
         self.ui.pbt_save_config.clicked.connect(self.save_config)
         self.ui.cmb_config.currentIndexChanged.connect(self.load)
+        self.ui.tbt_save_file.clicked.connect(self.save_measurement)
+        self.ui.tbt_save_to_database.clicked.connect(self.save_to_database)
 
     def start_meas(self):
         """Starts a new measurement."""
         self.stop = False
         self.update_config()
         self.config.meas_calculus()
+        _min = getattr(self.config, 'limit_min_' + self.config.axis1)
+        _max = getattr(self.config, 'limit_max_' + self.config.axis1)
+        print(_max)
+        print(self.config.end)
+        if self.config.analysis_interval > 0:
+            if ((_min is not None and self.config.start < _min) or
+                    (_max is not None and self.config.end > _max)):
+                _QMessageBox.warning(self, 'Warning',
+                                     'Position off the limits.',
+                                     _QMessageBox.Ok)
+                return
+        else:
+            if ((_max is not None and self.config.start > _max) or
+                    (_min is not None and self.config.end < _min)):
+                _QMessageBox.warning(self, 'Warning',
+                                     'Position off the limits.',
+                                     _QMessageBox.Ok)
+                return
         self.mdriver.cfg_measurement_type(self.config.type)
-        self.mdriver.cfg_measurement(self.config.final_pos,
-                                     self.config.m_ac, self.config.n_scans)
-        self.mdriver.cfg_trigger_signal(self.config.initial_pos,
-                                        self.config.pts_dist)
+        self.mdriver.cfg_trigger_signal(self.config.start,
+                                        self.config.step)
 
         if self.config.analysis_interval > 0:
-            self.mdriver.axis_move(self.config.axis, (self.config.initial_pos
-                                   - self.config.pts_dist))
+            self.mdriver.cfg_measurement(self.config.end + self.config.extra,
+                                         self.config.m_ac, self.config.n_scans)
+            self.mdriver.axis_move(self.config.axis1,
+                                   (self.config.start - self.config.extra))
         else:
-            self.mdriver.axis_move(self.config.axis, (self.config.initial_pos
-                                   + self.config.pts_dist))
+            self.mdriver.cfg_measurement(self.config.end - self.config.extra,
+                                         self.config.m_ac, self.config.n_scans)
+            self.mdriver.axis_move(self.config.axis1,
+                                   (self.config.start + self.config.extra))
 
-        if self.config.axis == 'X':
+        _time.sleep(0.5)
+        if self.config.axis1 == 'X':
             while(not(self.mdriver.in_position(1))):
                 pass
         else:
@@ -94,15 +117,15 @@ class MeasurementsWidget(_QWidget):
 
         self.mint.config_trig_external(self.config.n_pts)
         self.mint.start_measurement()
-        self.mdriver.run_motion_prog(self.config.type, self.config.axis)
+        self.mdriver.run_motion_prog(self.config.type, self.config.axis1)
 
         # start collecting data
         _time0 = _time.time()
         _count = self.mint.get_data_count()
         while ((_count != self.config.n_pts-1) and (self.stop is False)):
             _count = self.mint.get_data_count()
-            self.ui.lcd_pos.display(
-                self.mdriver.get_position(self.config.axis))
+            '''self.ui.lcd_pos.display(
+                self.mdriver.get_position(self.config.axis1))'''
             if (_time.time() - _time0) > self.config.time_limit:
                 _QMessageBox.warning(self, 'Warning', 'Timeout while '
                                      'waiting for integrator data.',
@@ -125,21 +148,20 @@ class MeasurementsWidget(_QWidget):
                                              _QMessageBox.Ok)
                     return
 
-            self.meas.raw_curve = _np.array(_results, dtype=_np.float64)
+            self.meas.raw_data = _np.array(_results, dtype=_np.float64)
             try:
-                _tmp = self.meas.raw_curve.reshape(
+                _tmp = self.meas.raw_data.reshape(
                     self.config.n_scans,
                     self.config.n_pts-1).transpose()
             except Exception:
                 _traceback.print_exc(file=_sys.stdout)
                 return
 
-#            px = _np.linspace(0, len(self.meas.raw_curve)-1,
-#                              len(self.meas.raw_curve))
-            px = _np.linspace(self.config.initial_pos, self.config.final_pos,
+            px = _np.linspace(self.config.start, self.config.end,
                               self.config.n_pts-1)
             self.ui.gv_rawcurves.plotItem.plot(
-                px, self.meas.raw_curve, pen=(0, 0, 0), width=3, symbol=None)
+                px, self.meas.raw_data, pen=(0, 0, 0), width=3, symbol=None)
+#            self.meas.first_integral_calculus()
 
     def stop_meas(self):
         """Aborts measurement."""
@@ -155,12 +177,20 @@ class MeasurementsWidget(_QWidget):
 
         self.ui.le_operator.setText(self.config.operator)
         self.ui.le_magnet_name.setText(self.config.magnet_name)
-        self.ui.cmb_meas_axis.setCurrentText(self.config.axis)
-        self.ui.le_init_pos.setText(str(self.config.initial_pos))
-        self.ui.le_final_pos.setText(str(self.config.final_pos))
-        self.ui.le_pts_dist.setText(str(self.config.pts_dist))
         self.ui.cmb_meas_integral.setCurrentText(self.config.type)
-        self.ui.te_meas_details.setText(self.config.comments)
+        self.ui.le_comments.setText(self.config.comments)
+        getattr(self.ui, 'rb_axis1_'
+                + self.config.axis1).setChecked(True)
+        getattr(self.ui, 'le_start_'
+                + self.config.axis1).setText(str(self.config.start))
+        getattr(self.ui, 'le_end_'
+                + self.config.axis1).setText(str(self.config.end))
+        getattr(self.ui, 'le_step_'
+                + self.config.axis1).setText(str(self.config.step))
+        getattr(self.ui, 'le_extra_'
+                + self.config.axis1).setText(str(self.config.extra))
+        getattr(self.ui, 'le_vel_'
+                + self.config.axis1).setText(str(self.config.vel))
 
     def save_config(self):
         """Save current configuration to file."""
@@ -194,13 +224,64 @@ class MeasurementsWidget(_QWidget):
     def update_config(self):
         self.config.magnet_name = self.ui.le_magnet_name.text().upper()
         self.config.operator = self.ui.le_operator.text()
-        self.config.axis = self.ui.cmb_meas_axis.currentText()
-        self.config.initial_pos = float(self.ui.le_init_pos.text())
-        self.config.final_pos = float(self.ui.le_final_pos.text())
-        self.config.analysis_interval = (self.config.final_pos
-                                         - self.config.initial_pos)
-        self.config.pts_dist = float(self.ui.le_pts_dist.text())
-        self.config.n_pts = int(self.config.analysis_interval /
-                                self.config.pts_dist)
         self.config.type = self.ui.cmb_meas_integral.currentText()
-        self.config.comments = self.ui.te_meas_details.toPlainText()
+        self.config.comments = self.ui.le_comments.text()
+        self.config.n_scans = self.ui.sb_nr_of_measurements.value()
+        if self.ui.rb_axis1_X.isChecked():
+            self.config.axis1 = 'X'
+        elif self.ui.rb_axis1_Y.isChecked():
+            self.config.axis1 = 'Y'
+        else:
+            _QMessageBox.warning(self, 'Warning', 'Please, select an axis.',
+                                 _QMessageBox.Ok)
+        self.config.start = float(getattr(self.ui, 'le_start_'
+                                          + self.config.axis1).text())
+        self.config.end = float(getattr(self.ui, 'le_end_'
+                                        + self.config.axis1).text())
+        self.config.step = float(getattr(self.ui, 'le_step_'
+                                         + self.config.axis1).text())
+        self.config.extra = float(getattr(self.ui, 'le_extra_'
+                                          + self.config.axis1).text())
+        self.config.vel = float(getattr(self.ui, 'le_vel_'
+                                        + self.config.axis1).text())
+        self.config.analysis_interval = (self.config.end
+                                         - self.config.start)
+        self.config.n_pts = abs(int(self.config.analysis_interval
+                                / self.config.step))
+
+    def save_measurement(self):
+        """Save current measurement to file."""
+        self.update_meas()
+        filename = _QFileDialog.getSaveFileName(
+            self, caption='Open measurement file',
+            directory=self.meas.database_name,
+            filter="Text files (*.txt *.dat)")
+
+        if isinstance(filename, tuple):
+            filename = filename[0]
+
+        if len(filename) == 0:
+            return
+
+        self.meas.save_file(filename)
+        self.ui.cmb_config.addItem(filename)
+
+    def save_to_database(self):
+        self.update_meas()
+        if not self.meas.save_to_database():
+            raise Exception("Failed to save database.")
+
+    def update_meas(self):
+        self.meas.operator = self.config.operator
+        self.meas.magnet_name = self.config.magnet_name
+        self.meas.axis1 = self.config.axis1
+        self.meas.type = self.config.type
+        self.meas.comments = self.config.comments
+        self.meas.start = self.config.start
+        self.meas.end = self.config.end
+        self.meas.step = self.config.step
+        self.meas.extra = self.config.extra
+        self.meas.vel = self.config.vel
+#        self.meas.raw_data = None
+#        self.meas.first_integral = None
+#        self.meas.second_integral = None

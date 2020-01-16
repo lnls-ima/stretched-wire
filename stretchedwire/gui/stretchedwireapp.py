@@ -7,11 +7,13 @@ import threading as _threading
 
 from qtpy.QtWidgets import QApplication as _QApplication
 from stretchedwire.gui.mainwindow import MainWindow as _MainWindow
+from stretchedwire.data import meas as _meas
 
 # Styles: ["windows", "motif", "cde", "plastique", "windowsxp", or "macintosh"]
-_style = 'plastique'
+_style = 'windows'
 _width = 800
 _height = 500
+_database_filename = 'stretched_wire_measurements.db'
 
 
 class StretchedWireApp(_QApplication):
@@ -22,8 +24,18 @@ class StretchedWireApp(_QApplication):
         super().__init__(args)
         self.setStyle(_style)
 
+        self.meas = _meas
+
         self.directory = _os.path.dirname(_os.path.dirname(
             _os.path.dirname(_os.path.abspath(__file__))))
+        self.meas.database_name = _os.path.join(
+            self.directory, _database_filename)
+        self.create_database()
+
+    def create_database(self):
+        """Create collections."""
+        if not self.meas.create_collection():
+            raise Exception("Failed to create database.")
 
 
 class GUIThread(_threading.Thread):

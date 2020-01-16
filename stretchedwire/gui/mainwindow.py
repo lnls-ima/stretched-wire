@@ -3,6 +3,8 @@
 
 from qtpy.QtWidgets import (
     QMainWindow as _QMainWindow,
+    QFileDialog as _QFileDialog,
+    QApplication as _QApplication,
     )
 from qtpy.QtGui import QIcon as _QIcon
 import sys as _sys
@@ -22,6 +24,8 @@ from stretchedwire.gui.measurementswidget \
 from stretchedwire.gui.resultswidget \
  import ResultsWidget as _ResultsWidget
 
+from stretchedwire.data import meas as _meas
+
 
 class MainWindow(_QMainWindow):
     """Main Window class for the Stretched Wire GUI."""
@@ -34,6 +38,8 @@ class MainWindow(_QMainWindow):
         uifile = _get_ui_file(self)
         self.ui = _uic.loadUi(uifile, self)
         self.resize(width, height)
+
+        self.meas = _meas
 
         # define tab names and corresponding widgets
         self.tab_names = [
@@ -52,6 +58,9 @@ class MainWindow(_QMainWindow):
             _ResultsWidget(),
             ]
 
+        # show database name
+        self.ui.le_database.setText(self.meas.database_name)
+
         # add widgets to main tab
         self.ui.twg_main_tab.clear()
         for i in range(len(self.tab_names)):
@@ -61,6 +70,40 @@ class MainWindow(_QMainWindow):
             icon = _get_icon_path(tab_name)
             self.ui.twg_main_tab.addTab(tab, _QIcon(icon),
                                         tab_name.capitalize())
+
+        self.connect_signal_slots()
+
+    def connect_signal_slots(self):
+        self.ui.tbt_database.clicked.connect(self.changeDatabase)
+
+    @property
+    def database(self):
+        """Return the database filename."""
+        return _QApplication.instance().database
+
+    @database.setter
+    def database(self, value):
+        _QApplication.instance().database = value
+
+    @property
+    def directory(self):
+        """Return the default directory."""
+        return _QApplication.instance().directory
+
+    def changeDatabase(self):
+        """Change database file."""
+        fn = _QFileDialog.getOpenFileName(
+            self, caption='Database file', directory=self.directory,
+            filter="Database File (*.db)")
+
+        if isinstance(fn, tuple):
+            fn = fn[0]
+
+        if len(fn) == 0:
+            return
+
+        self.meas.database_name = fn
+        self.ui.le_database.setText(self.meas.database_name)
 
     def closeEvent(self, event):
         """Close main window and tabs."""
