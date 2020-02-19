@@ -25,7 +25,16 @@
       <string>Integrator</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <property name="margin">
+      <property name="leftMargin">
+       <number>20</number>
+      </property>
+      <property name="topMargin">
+       <number>20</number>
+      </property>
+      <property name="rightMargin">
+       <number>20</number>
+      </property>
+      <property name="bottomMargin">
        <number>20</number>
       </property>
       <item row="0" column="0">
@@ -52,6 +61,42 @@
          <property name="rightMargin">
           <number>15</number>
          </property>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Trigger Source:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QPushButton" name="pbt_config_integrator">
+           <property name="minimumSize">
+            <size>
+             <width>300</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Configure Integrator</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>../../resources/img/settings.png</normaloff>../../resources/img/settings.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>22</width>
+             <height>22</height>
+            </size>
+           </property>
+          </widget>
+         </item>
          <item row="0" column="1">
           <widget class="QComboBox" name="cmb_trigger_source">
            <property name="sizePolicy">
@@ -145,40 +190,25 @@
            </item>
           </widget>
          </item>
-         <item row="3" column="1">
-          <widget class="QPushButton" name="pbt_config_integrator">
-           <property name="minimumSize">
-            <size>
-             <width>300</width>
-             <height>0</height>
-            </size>
-           </property>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_4">
            <property name="text">
-            <string>Configure Integrator</string>
-           </property>
-           <property name="icon">
-            <iconset>
-             <normaloff>../../resources/img/settings.png</normaloff>../../resources/img/settings.png</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>22</width>
-             <height>22</height>
-            </size>
+            <string>Measurement:</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string>Trigger Source:</string>
-           </property>
+         <item row="2" column="1">
+          <widget class="QComboBox" name="cmb_meas_unit">
+           <item>
+            <property name="text">
+             <string>Flux (V.s)</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Voltage (V)</string>
+            </property>
+           </item>
           </widget>
          </item>
         </layout>
@@ -317,22 +347,18 @@
          <string>Timer</string>
         </property>
         <layout class="QGridLayout" name="gridLayout_4">
-         <property name="margin">
+         <property name="leftMargin">
           <number>9</number>
          </property>
-         <item row="1" column="2">
-          <spacer name="horizontalSpacer">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
+         <property name="topMargin">
+          <number>9</number>
+         </property>
+         <property name="rightMargin">
+          <number>9</number>
+         </property>
+         <property name="bottomMargin">
+          <number>9</number>
+         </property>
          <item row="1" column="1">
           <widget class="QLineEdit" name="le_timer_rate">
            <property name="sizePolicy">
@@ -346,8 +372,8 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="3">
-          <widget class="QPushButton" name="pbt_meas_timer">
+         <item row="1" column="4">
+          <widget class="QPushButton" name="pbt_stop">
            <property name="minimumSize">
             <size>
              <width>120</width>
@@ -355,14 +381,7 @@
             </size>
            </property>
            <property name="text">
-            <string>Measure</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_2">
-           <property name="text">
-            <string>Rate (Hz):</string>
+            <string>Stop</string>
            </property>
           </widget>
          </item>
@@ -386,8 +405,28 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="4">
-          <widget class="QPushButton" name="pbt_stop">
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>Rate (Hz):</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="1" column="3">
+          <widget class="QPushButton" name="pbt_meas_timer">
            <property name="minimumSize">
             <size>
              <width>120</width>
@@ -395,11 +434,28 @@
             </size>
            </property>
            <property name="text">
-            <string>Stop</string>
+            <string>Measure</string>
            </property>
           </widget>
          </item>
-         <item row="3" column="0" colspan="5">
+         <item row="1" column="5">
+          <widget class="QToolButton" name="tbt_save_file">
+           <property name="text">
+            <string>...</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>../../resources/img/document_save_as.png</normaloff>../../resources/img/document_save_as.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>30</width>
+             <height>30</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0" colspan="6">
           <widget class="PlotWidget" name="gv_rawcurves_tim">
            <property name="backgroundBrush">
             <brush brushstyle="NoBrush">
@@ -453,7 +509,7 @@
   <customwidget>
    <class>PlotWidget</class>
    <extends>QGraphicsView</extends>
-   <header>pyqtgraph</header>
+   <header location="global">pyqtgraph</header>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -5,6 +5,7 @@ from qtpy.QtWidgets import (
     QWidget as _QWidget,
     QApplication as _QApplication,
     QMessageBox as _QMessageBox,
+    QFileDialog as _QFileDialog,
     )
 import sys as _sys
 import time as _time
@@ -43,12 +44,19 @@ class IntegratorWidget(_QWidget):
         self.ui.pbt_stop.clicked.connect(self.stop)
         self.ui.pbt_status_update.clicked.connect(self.status_update)
         self.ui.pbt_shut_down.clicked.connect(self.shut_down)
+        self.ui.tbt_save_file.clicked.connect(self.save_file)
 
     def config_integrator(self):
         """Configures the FDI2056."""
         try:
+            self.ui.gv_rawcurves_tim.plotItem.curves.clear()
+            self.ui.gv_rawcurves_tim.clear()
             self.update_config()
             self.mint.main_settings(self.config.gain, self.config.trig_source)
+            if self.config.meas_unit == 'V.s':
+                self.mint.send('SENS:FUNC FLUX')
+            else:
+                self.mint.send('SENS:FUNC VOLT')
             _QMessageBox.information(self, 'Information',
                                      'Integrator configured successfully.',
                                      _QMessageBox.Ok)
@@ -65,7 +73,7 @@ class IntegratorWidget(_QWidget):
         _total_time = float(self.ui.le_meas_time.text())
         _rate = float(self.ui.le_timer_rate.text())
         _pts = round(_total_time / (1/_rate))
-        _time_limit = 2 * _total_time
+        _time_limit = 50 * _total_time
 
         self.mint.config_trig_timer(_rate, _pts)
         self.mint.start_measurement()
@@ -74,7 +82,7 @@ class IntegratorWidget(_QWidget):
         self.ui.gv_rawcurves_tim.plotItem.curves.clear()
         self.ui.gv_rawcurves_tim.clear()
         self.ui.gv_rawcurves_tim.plotItem.setLabel(
-            'left', "Amplitude", units="V.s")
+            'left', "Amplitude", units=self.config.meas_unit)
         self.ui.gv_rawcurves_tim.plotItem.setLabel(
             'bottom', "Points")
         self.ui.gv_rawcurves_tim.plotItem.showGrid(
@@ -94,10 +102,14 @@ class IntegratorWidget(_QWidget):
 
         if self.stop is False:
             _results = self.mint.get_data()
+            print(_results)
             _results = _results.strip('\n').split(',')
             for i in range(len(_results)):
                 try:
-                    _results[i] = float(_results[i].strip(' WB'))
+                    if self.config.meas_unit == 'V.s':
+                        _results[i] = float(_results[i].strip(' WB'))
+                    else:
+                        _results[i] = float(_results[i].strip(' V'))
                 except Exception:
                     _traceback.print_exc(file=_sys.stdout)
                     if 'NAN' in _results[i]:
@@ -107,22 +119,41 @@ class IntegratorWidget(_QWidget):
                                              _QMessageBox.Ok)
                     return
 
-            self.meas.raw_curve = _np.array(_results, dtype=_np.float64)
+            self.meas.raw_data = _np.array(_results, dtype=_np.float64)
             try:
-                _tmp = self.meas.raw_curve.reshape(
+                _tmp = self.meas.raw_data.reshape(
                     self.config.n_scans,
                     _pts-1).transpose()
             except Exception:
                 _traceback.print_exc(file=_sys.stdout)
                 return
 
-            px = _np.linspace(0, len(self.meas.raw_curve)-1,
-                              len(self.meas.raw_curve))
+            px = _np.linspace(0, len(self.meas.raw_data)-1,
+                              len(self.meas.raw_data))
             self.ui.gv_rawcurves_tim.plotItem.plot(
-                px, self.meas.raw_curve, pen=(255, 0, 0), symbol=None)
+                px, self.meas.raw_data, pen=(255, 0, 0), symbol=None)
+
+#            fft = _np.fft.fft(self.meas.raw_data)
+#            freq = _np.fft.fftfreq(self.meas.raw_data.size, 0.0005)
+#            plt.plot(freq, fft.real)
+#            plt.show()
 
     def stop(self):
         self.stop = True
+
+    def save_file(self):
+        filename = _QFileDialog.getSaveFileName(
+            self, caption='Open measurement file',
+            directory='Integrator_Measurement',
+            filter="Text files (*.txt *.dat)")
+
+        if isinstance(filename, tuple):
+            filename = filename[0]
+
+        if len(filename) == 0:
+            return
+
+        self.meas.save_file(filename)
 
     def status_update(self):
         """Updates integrator status on UI."""
@@ -141,6 +172,10 @@ class IntegratorWidget(_QWidget):
     def update_config(self):
         self.config.gain = int(self.ui.cmb_integrator_gain.currentText())
         self.config.trig_source = self.ui.cmb_trigger_source.currentText()
+        if self.ui.cmb_meas_unit.currentText() == 'Flux (V.s)':
+            self.config.meas_unit = 'V.s'
+        else:
+            self.config.meas_unit = 'V'
         if self.config.trig_source == "Timer":
             self.ui.gb_timer.setEnabled(True)
         else:

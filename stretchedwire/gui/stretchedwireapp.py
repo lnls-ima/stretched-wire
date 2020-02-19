@@ -34,7 +34,7 @@ class StretchedWireApp(_QApplication):
 
     def create_database(self):
         """Create collections."""
-        if not self.meas.create_collection():
+        if not self.meas.db_create_collection():
             raise Exception("Failed to create database.")
 
 

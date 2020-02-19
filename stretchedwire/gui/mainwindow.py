@@ -23,6 +23,8 @@ from stretchedwire.gui.measurementswidget \
  import MeasurementsWidget as _MeasurementsWidget
 from stretchedwire.gui.resultswidget \
  import ResultsWidget as _ResultsWidget
+from stretchedwire.gui.databasewidget \
+ import DatabaseWidget as _DatabaseWidget
 
 from stretchedwire.data import meas as _meas
 
@@ -48,6 +50,7 @@ class MainWindow(_QMainWindow):
             'Integrator',
             'Measurements',
             'Results',
+            'Database'
             ]
 
         self.tab_widgets = [
@@ -56,6 +59,7 @@ class MainWindow(_QMainWindow):
             _IntegratorWidget(),
             _MeasurementsWidget(),
             _ResultsWidget(),
+            _DatabaseWidget(),
             ]
 
         # show database name

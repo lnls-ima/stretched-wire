@@ -6,13 +6,18 @@ import sys as _sys
 import time as _time
 import numpy as _np
 import traceback as _traceback
+from scipy import stats
 from qtpy.QtWidgets import (
     QWidget as _QWidget,
     QFileDialog as _QFileDialog,
     QApplication as _QApplication,
     QMessageBox as _QMessageBox,
     )
+from qtpy.QtCore import (
+    QTimer as _QTimer,
+    )
 import qtpy.uic as _uic
+# import matplotlib.pyplot as plt
 
 from stretchedwire.gui.utils import get_ui_file as _get_ui_file
 from stretchedwire.devices import ppmac as _mdriver
@@ -32,11 +37,16 @@ class MeasurementsWidget(_QWidget):
         uifile = _get_ui_file(self)
         self.ui = _uic.loadUi(uifile, self)
 
+        self.ui.la_connection_status.setText('OK')
+        self.ui.la_connection_status.setStyleSheet('color: rgb(0, 0, 0)')
+
         self.mdriver = _mdriver
         self.mint = _mint
         self.config = _config
         self.meas = _meas
-
+        self.stop = True
+        self.update_timer = 500
+        self.position_timer = _QTimer()
         self.list_config_files()
 
         # connect signals and slots
@@ -59,16 +69,17 @@ class MeasurementsWidget(_QWidget):
         self.ui.cmb_config.currentIndexChanged.connect(self.load)
         self.ui.tbt_save_file.clicked.connect(self.save_measurement)
         self.ui.tbt_save_to_database.clicked.connect(self.save_to_database)
+        self.ui.pbt_refresh_status.clicked.connect(self.refresh_connection)
+        self.position_timer.timeout.connect(self.update_position)
 
     def start_meas(self):
         """Starts a new measurement."""
         self.stop = False
         self.update_config()
+        self.config.motor_calculus()
         self.config.meas_calculus()
         _min = getattr(self.config, 'limit_min_' + self.config.axis1)
         _max = getattr(self.config, 'limit_max_' + self.config.axis1)
-        print(_max)
-        print(self.config.end)
         if self.config.analysis_interval > 0:
             if ((_min is not None and self.config.start < _min) or
                     (_max is not None and self.config.end > _max)):
@@ -83,9 +94,13 @@ class MeasurementsWidget(_QWidget):
                                      'Position off the limits.',
                                      _QMessageBox.Ok)
                 return
+
+        self.mdriver.cfg_motor(1, self.config.m_ac, self.config.m_hvel)
+        self.mdriver.cfg_motor(3, self.config.m_ac, self.config.m_hvel)
+        self.mdriver.cfg_motor(2, self.config.m_ac, self.config.m_vvel)
+        self.mdriver.cfg_motor(4, self.config.m_ac, self.config.m_vvel)
+
         self.mdriver.cfg_measurement_type(self.config.type)
-        self.mdriver.cfg_trigger_signal(self.config.start,
-                                        self.config.step)
 
         if self.config.analysis_interval > 0:
             self.mdriver.cfg_measurement(self.config.end + self.config.extra,
@@ -100,16 +115,20 @@ class MeasurementsWidget(_QWidget):
 
         _time.sleep(0.5)
         if self.config.axis1 == 'X':
-            while(not(self.mdriver.in_position(1))):
-                pass
+            _pos = self.mdriver.in_position(1)
+            while(_pos is 0):
+                _pos = self.mdriver.in_position(1)
         else:
-            while(not(self.mdriver.in_position(2))):
-                pass
+            _pos = self.mdriver.in_position(2)
+            while(_pos is 0):
+                _pos = self.mdriver.in_position(2)
+
+        self.mdriver.cfg_trigger_signal(self.config.start, self.config.step)
 
         self.ui.gv_rawcurves.plotItem.curves.clear()
         self.ui.gv_rawcurves.clear()
         self.ui.gv_rawcurves.plotItem.setLabel(
-            'left', "Amplitude", units="V.s")
+            'left', "Amplitude", units=self.config.meas_unit)
         self.ui.gv_rawcurves.plotItem.setLabel(
             'bottom', "Position", units='mm')
         self.ui.gv_rawcurves.plotItem.showGrid(
@@ -118,14 +137,13 @@ class MeasurementsWidget(_QWidget):
         self.mint.config_trig_external(self.config.n_pts)
         self.mint.start_measurement()
         self.mdriver.run_motion_prog(self.config.type, self.config.axis1)
+        self.position_timer.start(self.update_timer)
 
         # start collecting data
         _time0 = _time.time()
         _count = self.mint.get_data_count()
         while ((_count != self.config.n_pts-1) and (self.stop is False)):
             _count = self.mint.get_data_count()
-            '''self.ui.lcd_pos.display(
-                self.mdriver.get_position(self.config.axis1))'''
             if (_time.time() - _time0) > self.config.time_limit:
                 _QMessageBox.warning(self, 'Warning', 'Timeout while '
                                      'waiting for integrator data.',
@@ -138,7 +156,10 @@ class MeasurementsWidget(_QWidget):
             _results = _results.strip('\n').split(',')
             for i in range(len(_results)):
                 try:
-                    _results[i] = float(_results[i].strip(' WB'))
+                    if self.config.meas_unit == 'V.s':
+                        _results[i] = float(_results[i].strip(' WB'))
+                    else:
+                        _results[i] = float(_results[i].strip(' V'))
                 except Exception:
                     _traceback.print_exc(file=_sys.stdout)
                     if 'NAN' in _results[i]:
@@ -158,15 +179,27 @@ class MeasurementsWidget(_QWidget):
                 return
 
             px = _np.linspace(self.config.start, self.config.end,
-                              self.config.n_pts-1)
+                              self.config.n_pts)
+            px = px[1:]
             self.ui.gv_rawcurves.plotItem.plot(
                 px, self.meas.raw_data, pen=(0, 0, 0), width=3, symbol=None)
-#            self.meas.first_integral_calculus()
+
+            px = px * 0.001
+            data = self.meas.raw_data / (self.config.step*0.001)
+            print(self.meas.raw_data)
+            print(stats.linregress(px, data))
+#            fft = _np.fft.fft(self.meas.raw_data)
+#            freq = _np.fft.fftfreq(self.meas.raw_data.size, 0.0005)
+#            plt.plot(freq, fft.real)
+#            plt.show()
 
     def stop_meas(self):
         """Aborts measurement."""
         self.mdriver.abort_motion_prog()
-        # _comm.fdi.stop_measurement()
+        self.mdriver.kill(1)
+        self.mdriver.kill(2)
+        self.mdriver.kill(3)
+        self.mdriver.kill(4)
         self.stop = True
 
     def load(self):
@@ -254,7 +287,7 @@ class MeasurementsWidget(_QWidget):
         self.update_meas()
         filename = _QFileDialog.getSaveFileName(
             self, caption='Open measurement file',
-            directory=self.meas.database_name,
+            directory=self.meas.magnet_name,
             filter="Text files (*.txt *.dat)")
 
         if isinstance(filename, tuple):
@@ -264,11 +297,10 @@ class MeasurementsWidget(_QWidget):
             return
 
         self.meas.save_file(filename)
-        self.ui.cmb_config.addItem(filename)
 
     def save_to_database(self):
         self.update_meas()
-        if not self.meas.save_to_database():
+        if not self.meas.db_save():
             raise Exception("Failed to save database.")
 
     def update_meas(self):
@@ -285,3 +317,24 @@ class MeasurementsWidget(_QWidget):
 #        self.meas.raw_data = None
 #        self.meas.first_integral = None
 #        self.meas.second_integral = None
+
+    def update_position(self):
+        _pos = self.mdriver.get_position(self.config.axis1)
+        if _pos == '0000000':
+            self.ui.lcd_pos.display(0)
+            self.ui.la_connection_status.setText('Error')
+            self.ui.la_connection_status.setStyleSheet('color: rgb(255, 0, 0)')
+        else:
+            self.ui.lcd_pos.display(float(_pos))
+            self.ui.la_connection_status.setText('OK')
+            self.ui.la_connection_status.setStyleSheet('color: rgb(0, 0, 0)')
+
+    def refresh_connection(self):
+        self.position_timer.stop()
+        self.mdriver.disconnect()
+        if self.mdriver.connect(self.config.ppmac_ip):
+            self.ui.la_connection_status.setText('OK')
+            self.ui.la_connection_status.setStyleSheet('color: rgb(0, 0, 0)')
+        else:
+            self.ui.la_connection_status.setText('Error')
+            self.ui.la_connection_status.setStyleSheet('color: rgb(255, 0, 0)')

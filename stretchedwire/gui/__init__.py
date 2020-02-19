@@ -6,5 +6,6 @@ from . import motorswidget
 from . import integratorwidget
 from . import measurementswidget
 from . import resultswidget
+from . import databasewidget
 from . import mainwindow
 from . import utils

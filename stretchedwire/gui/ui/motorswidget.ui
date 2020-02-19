@@ -80,17 +80,149 @@
          <property name="verticalSpacing">
           <number>15</number>
          </property>
-         <item row="2" column="0" colspan="4">
-          <widget class="QGroupBox" name="gridGroupBox_3">
-           <layout class="QGridLayout" name="gridLayout_18">
+         <item row="6" column="0" colspan="4">
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <property name="spacing">
+            <number>15</number>
+           </property>
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="topMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>10</number>
+           </property>
+           <property name="bottomMargin">
+            <number>10</number>
+           </property>
+           <item>
+            <spacer name="horizontalSpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pbt_homez">
+             <property name="minimumSize">
+              <size>
+               <width>150</width>
+               <height>50</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>150</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>Zero-move home selected motors</string>
+             </property>
+             <property name="text">
+              <string>Zero-move
+Homing</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pbt_home">
+             <property name="minimumSize">
+              <size>
+               <width>150</width>
+               <height>50</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>150</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>12</pointsize>
+              </font>
+             </property>
+             <property name="toolTip">
+              <string>Home selected motors</string>
+             </property>
+             <property name="text">
+              <string>Home</string>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>20</width>
+               <height>20</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pbt_kill">
+             <property name="minimumSize">
+              <size>
+               <width>150</width>
+               <height>50</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>150</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>Kill selected motors</string>
+             </property>
+             <property name="accessibleDescription">
+              <string>Kill all motors</string>
+             </property>
+             <property name="text">
+              <string>Kill</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pbt_emergency">
+             <property name="minimumSize">
+              <size>
+               <width>150</width>
+               <height>50</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Emergency</string>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>30</width>
+               <height>30</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="3" column="0" colspan="4">
+          <widget class="QGroupBox" name="gridGroupBox_6">
+           <layout class="QGridLayout" name="gridLayout_19">
             <property name="leftMargin">
              <number>60</number>
             </property>
             <property name="rightMargin">
              <number>20</number>
             </property>
-            <item row="1" column="1">
-             <widget class="QPushButton" name="signal_forward_ls_2">
+            <item row="0" column="1">
+             <widget class="QPushButton" name="signal_reverse_ls_3">
               <property name="enabled">
                <bool>false</bool>
               </property>
@@ -106,21 +238,8 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="2">
-             <widget class="QLabel" name="label_31">
-              <property name="font">
-               <font>
-                <pointsize>10</pointsize>
-               </font>
-              </property>
-              <property name="text">
-               <string>Reverse
-Limit Switch</string>
-              </property>
-             </widget>
-            </item>
             <item row="0" column="3" rowspan="2">
-             <widget class="QLineEdit" name="le_encoder_reading_2">
+             <widget class="QLineEdit" name="le_encoder_reading_3">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -143,8 +262,8 @@ Limit Switch</string>
               </property>
              </widget>
             </item>
-            <item row="0" column="1">
-             <widget class="QPushButton" name="signal_reverse_ls_2">
+            <item row="1" column="1">
+             <widget class="QPushButton" name="signal_forward_ls_3">
               <property name="enabled">
                <bool>false</bool>
               </property>
@@ -160,8 +279,21 @@ Limit Switch</string>
               </property>
              </widget>
             </item>
+            <item row="0" column="2">
+             <widget class="QLabel" name="label_35">
+              <property name="font">
+               <font>
+                <pointsize>10</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Reverse
+Limit Switch</string>
+              </property>
+             </widget>
+            </item>
             <item row="1" column="2">
-             <widget class="QLabel" name="label_34">
+             <widget class="QLabel" name="label_36">
               <property name="font">
                <font>
                 <pointsize>10</pointsize>
@@ -174,7 +306,7 @@ Limit Switch</string>
              </widget>
             </item>
             <item row="0" column="5" rowspan="2">
-             <widget class="QToolButton" name="tbt_read_2">
+             <widget class="QToolButton" name="tbt_read_3">
               <property name="toolTip">
                <string>Read encoder</string>
               </property>
@@ -197,7 +329,7 @@ Limit Switch</string>
              </widget>
             </item>
             <item row="0" column="4" rowspan="2">
-             <widget class="QToolButton" name="tbt_home_2">
+             <widget class="QToolButton" name="tbt_home_3">
               <property name="enabled">
                <bool>false</bool>
               </property>
@@ -223,9 +355,9 @@ Limit Switch</string>
              </widget>
             </item>
             <item row="0" column="0" rowspan="2">
-             <widget class="QCheckBox" name="chb_motor_2">
+             <widget class="QCheckBox" name="chb_motor_3">
               <property name="text">
-               <string>Motor 2</string>
+               <string>Motor 3</string>
               </property>
              </widget>
             </item>
@@ -384,127 +516,366 @@ Limit Switch</string>
            </layout>
           </widget>
          </item>
-         <item row="6" column="0" colspan="4">
-          <layout class="QHBoxLayout" name="horizontalLayout">
-           <property name="spacing">
-            <number>15</number>
-           </property>
-           <property name="leftMargin">
-            <number>10</number>
-           </property>
-           <property name="topMargin">
-            <number>10</number>
-           </property>
-           <property name="rightMargin">
-            <number>10</number>
-           </property>
-           <property name="bottomMargin">
-            <number>10</number>
-           </property>
-           <item>
-            <spacer name="horizontalSpacer">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QPushButton" name="pbt_homez">
-             <property name="minimumSize">
-              <size>
-               <width>150</width>
-               <height>50</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>150</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="toolTip">
-              <string>Zero-move home selected motors</string>
-             </property>
-             <property name="text">
-              <string>Zero-move
-Homing</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="pbt_home">
-             <property name="minimumSize">
-              <size>
-               <width>150</width>
-               <height>50</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>150</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>12</pointsize>
-              </font>
-             </property>
-             <property name="toolTip">
-              <string>Home selected motors</string>
-             </property>
-             <property name="text">
-              <string>Home</string>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>20</width>
-               <height>20</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="pbt_kill">
-             <property name="minimumSize">
-              <size>
-               <width>150</width>
-               <height>50</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>150</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="toolTip">
-              <string>Kill selected motors</string>
-             </property>
-             <property name="accessibleDescription">
-              <string>Kill all motors</string>
-             </property>
-             <property name="text">
-              <string>Kill</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
+         <item row="2" column="0" colspan="4">
+          <widget class="QGroupBox" name="gridGroupBox_3">
+           <layout class="QGridLayout" name="gridLayout_18">
+            <property name="leftMargin">
+             <number>60</number>
+            </property>
+            <property name="rightMargin">
+             <number>20</number>
+            </property>
+            <item row="1" column="1">
+             <widget class="QPushButton" name="signal_forward_ls_2">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset>
+                <normaloff>../../resources/img/green_light.png</normaloff>../../resources/img/green_light.png</iconset>
+              </property>
+              <property name="flat">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <widget class="QLabel" name="label_31">
+              <property name="font">
+               <font>
+                <pointsize>10</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Reverse
+Limit Switch</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="3" rowspan="2">
+             <widget class="QLineEdit" name="le_encoder_reading_2">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>22</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>0</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QPushButton" name="signal_reverse_ls_2">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset>
+                <normaloff>../../resources/img/green_light.png</normaloff>../../resources/img/green_light.png</iconset>
+              </property>
+              <property name="flat">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="2">
+             <widget class="QLabel" name="label_34">
+              <property name="font">
+               <font>
+                <pointsize>10</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Forward
+Limit Switch</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="5" rowspan="2">
+             <widget class="QToolButton" name="tbt_read_2">
+              <property name="toolTip">
+               <string>Read encoder</string>
+              </property>
+              <property name="text">
+               <string>...</string>
+              </property>
+              <property name="icon">
+               <iconset>
+                <normaloff>../../resources/img/refresh.png</normaloff>../../resources/img/refresh.png</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>30</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="autoRaise">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="4" rowspan="2">
+             <widget class="QToolButton" name="tbt_home_2">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="toolTip">
+               <string>Jog to zero</string>
+              </property>
+              <property name="text">
+               <string>...</string>
+              </property>
+              <property name="icon">
+               <iconset>
+                <normaloff>../../resources/img/home.png</normaloff>../../resources/img/home.png</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>32</width>
+                <height>32</height>
+               </size>
+              </property>
+              <property name="autoRaise">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0" rowspan="2">
+             <widget class="QCheckBox" name="chb_motor_2">
+              <property name="text">
+               <string>Motor 2</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
          </item>
-         <item row="0" column="3">
-          <widget class="QGroupBox" name="gridGroupBox_5">
-           <property name="maximumSize">
-            <size>
-             <width>341</width>
-             <height>16777215</height>
-            </size>
+         <item row="0" column="0" colspan="2">
+          <widget class="QGroupBox" name="groupBox_4">
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+            </font>
            </property>
+           <property name="title">
+            <string>Move motor</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_8">
+            <item row="7" column="0" colspan="3">
+             <layout class="QHBoxLayout" name="horizontalLayout_4">
+              <property name="leftMargin">
+               <number>10</number>
+              </property>
+              <property name="topMargin">
+               <number>10</number>
+              </property>
+              <property name="rightMargin">
+               <number>10</number>
+              </property>
+              <property name="bottomMargin">
+               <number>10</number>
+              </property>
+              <item>
+               <spacer name="horizontalSpacer_10">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pbt_move_motor">
+                <property name="minimumSize">
+                 <size>
+                  <width>105</width>
+                  <height>35</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>Move</string>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>../../resources/img/play.png</normaloff>../../resources/img/play.png</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>25</width>
+                  <height>35</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pbt_stop_motor">
+                <property name="minimumSize">
+                 <size>
+                  <width>105</width>
+                  <height>35</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>Stop</string>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>../../resources/img/stop_sign.png</normaloff>../../resources/img/stop_sign.png</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>22</width>
+                  <height>22</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item row="0" column="0" colspan="3">
+             <layout class="QGridLayout" name="gridLayout_9">
+              <item row="0" column="4" rowspan="2">
+               <widget class="QLabel" name="label_28">
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>mm</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2" rowspan="2">
+               <widget class="QLabel" name="label_27">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Position:</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0" rowspan="2">
+               <widget class="QLabel" name="label_21">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Motor:</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="3" rowspan="2">
+               <widget class="QLineEdit" name="le_motor_dist">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>130</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1" rowspan="2">
+               <widget class="QComboBox" name="cmb_motor">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>1</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>2</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>3</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>4</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item row="0" column="2" colspan="2">
+          <widget class="QGroupBox" name="gridGroupBox_5">
            <property name="font">
             <font>
              <pointsize>12</pointsize>
@@ -715,364 +1086,6 @@ Homing</string>
            </layout>
           </widget>
          </item>
-         <item row="0" column="0" colspan="3">
-          <widget class="QGroupBox" name="groupBox_4">
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-            </font>
-           </property>
-           <property name="title">
-            <string>Move motor</string>
-           </property>
-           <layout class="QGridLayout" name="gridLayout_8">
-            <item row="7" column="0" colspan="3">
-             <layout class="QHBoxLayout" name="horizontalLayout_4">
-              <property name="leftMargin">
-               <number>10</number>
-              </property>
-              <property name="topMargin">
-               <number>10</number>
-              </property>
-              <property name="rightMargin">
-               <number>10</number>
-              </property>
-              <property name="bottomMargin">
-               <number>10</number>
-              </property>
-              <item>
-               <spacer name="horizontalSpacer_10">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item>
-               <widget class="QPushButton" name="pbt_move_motor">
-                <property name="minimumSize">
-                 <size>
-                  <width>105</width>
-                  <height>35</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string>Move</string>
-                </property>
-                <property name="icon">
-                 <iconset>
-                  <normaloff>../../resources/img/play.png</normaloff>../../resources/img/play.png</iconset>
-                </property>
-                <property name="iconSize">
-                 <size>
-                  <width>25</width>
-                  <height>35</height>
-                 </size>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="pbt_stop_motor">
-                <property name="minimumSize">
-                 <size>
-                  <width>105</width>
-                  <height>35</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string>Stop</string>
-                </property>
-                <property name="icon">
-                 <iconset>
-                  <normaloff>../../resources/img/stop_sign.png</normaloff>../../resources/img/stop_sign.png</iconset>
-                </property>
-                <property name="iconSize">
-                 <size>
-                  <width>22</width>
-                  <height>22</height>
-                 </size>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item row="0" column="0" colspan="3">
-             <layout class="QGridLayout" name="gridLayout_9">
-              <item row="0" column="4" rowspan="2">
-               <widget class="QLabel" name="label_28">
-                <property name="font">
-                 <font>
-                  <pointsize>11</pointsize>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>mm</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="2" rowspan="2">
-               <widget class="QLabel" name="label_27">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="font">
-                 <font>
-                  <pointsize>11</pointsize>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Position:</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="0" rowspan="2">
-               <widget class="QLabel" name="label_21">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="font">
-                 <font>
-                  <pointsize>11</pointsize>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Motor:</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="3" rowspan="2">
-               <widget class="QLineEdit" name="le_motor_dist">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>130</width>
-                  <height>16777215</height>
-                 </size>
-                </property>
-                <property name="font">
-                 <font>
-                  <pointsize>11</pointsize>
-                 </font>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1" rowspan="2">
-               <widget class="QComboBox" name="cmb_motor">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="font">
-                 <font>
-                  <pointsize>11</pointsize>
-                 </font>
-                </property>
-                <item>
-                 <property name="text">
-                  <string>1</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>2</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>3</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>4</string>
-                 </property>
-                </item>
-               </widget>
-              </item>
-             </layout>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item row="3" column="0" colspan="4">
-          <widget class="QGroupBox" name="gridGroupBox_6">
-           <layout class="QGridLayout" name="gridLayout_19">
-            <property name="leftMargin">
-             <number>60</number>
-            </property>
-            <property name="rightMargin">
-             <number>20</number>
-            </property>
-            <item row="0" column="1">
-             <widget class="QPushButton" name="signal_reverse_ls_3">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-              <property name="icon">
-               <iconset>
-                <normaloff>../../resources/img/green_light.png</normaloff>../../resources/img/green_light.png</iconset>
-              </property>
-              <property name="flat">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="3" rowspan="2">
-             <widget class="QLineEdit" name="le_encoder_reading_3">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="font">
-               <font>
-                <pointsize>22</pointsize>
-               </font>
-              </property>
-              <property name="text">
-               <string>0</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-              </property>
-              <property name="readOnly">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QPushButton" name="signal_forward_ls_3">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-              <property name="icon">
-               <iconset>
-                <normaloff>../../resources/img/green_light.png</normaloff>../../resources/img/green_light.png</iconset>
-              </property>
-              <property name="flat">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="2">
-             <widget class="QLabel" name="label_35">
-              <property name="font">
-               <font>
-                <pointsize>10</pointsize>
-               </font>
-              </property>
-              <property name="text">
-               <string>Reverse
-Limit Switch</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="2">
-             <widget class="QLabel" name="label_36">
-              <property name="font">
-               <font>
-                <pointsize>10</pointsize>
-               </font>
-              </property>
-              <property name="text">
-               <string>Forward
-Limit Switch</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="5" rowspan="2">
-             <widget class="QToolButton" name="tbt_read_3">
-              <property name="toolTip">
-               <string>Read encoder</string>
-              </property>
-              <property name="text">
-               <string>...</string>
-              </property>
-              <property name="icon">
-               <iconset>
-                <normaloff>../../resources/img/refresh.png</normaloff>../../resources/img/refresh.png</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>30</width>
-                <height>30</height>
-               </size>
-              </property>
-              <property name="autoRaise">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="4" rowspan="2">
-             <widget class="QToolButton" name="tbt_home_3">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="toolTip">
-               <string>Jog to zero</string>
-              </property>
-              <property name="text">
-               <string>...</string>
-              </property>
-              <property name="icon">
-               <iconset>
-                <normaloff>../../resources/img/home.png</normaloff>../../resources/img/home.png</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>32</width>
-                <height>32</height>
-               </size>
-              </property>
-              <property name="autoRaise">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="0" rowspan="2">
-             <widget class="QCheckBox" name="chb_motor_3">
-              <property name="text">
-               <string>Motor 3</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
          <item row="1" column="0" colspan="4">
           <widget class="QGroupBox" name="gridGroupBox">
            <property name="font">
@@ -1244,7 +1257,7 @@ Limit Switch</string>
       <item row="0" column="0">
        <widget class="QGroupBox" name="gb_motor">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>

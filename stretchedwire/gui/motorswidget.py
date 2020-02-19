@@ -44,6 +44,7 @@ class MotorsWidget(_QWidget):
         self.ui.pbt_stop_motor.clicked.connect(self.stop_motor)
         self.ui.pbt_move_axis.clicked.connect(self.start_axis)
         self.ui.pbt_stop_axis.clicked.connect(self.stop_motor)
+        self.ui.pbt_emergency.clicked.connect(lambda: self.kill(True))
         self.ui.tbt_home_1.clicked.connect(lambda: self.home_position(1))
         self.ui.tbt_home_2.clicked.connect(lambda: self.home_position(2))
         self.ui.tbt_home_3.clicked.connect(lambda: self.home_position(3))
@@ -144,11 +145,17 @@ class MotorsWidget(_QWidget):
             if getattr(self.ui, 'chb_motor_' + str(m)).isChecked():
                 self.mdriver.homez(m)
 
-    def kill(self):
-        """Kill all motors outputs."""
-        for m in [1, 2, 3, 4]:
-            if getattr(self.ui, 'chb_motor_' + str(m)).isChecked():
-                self.mdriver.kill(m)
+    def kill(self, emergency=False):
+        """Kill motors outputs."""
+        if emergency:
+            self.mdriver.kill(1)
+            self.mdriver.kill(2)
+            self.mdriver.kill(3)
+            self.mdriver.kill(4)
+        else:
+            for m in [1, 2, 3, 4]:
+                if getattr(self.ui, 'chb_motor_' + str(m)).isChecked():
+                    self.mdriver.kill(m)
 
     def home_position(self, motor):
         """Jog the motor to the home position."""

@@ -1,10 +1,10 @@
 """Stretched Wire configuration module."""
 
 import collections as _collections
-from imautils.db.configuration import Configuration
+from imautils.db.database import DatabaseAndFileDocument
 
 
-class StretchedWireConfig(Configuration):
+class StretchedWireConfig(DatabaseAndFileDocument):
     """Stretched Wire configuration parameters class."""
 
     mongo = False
@@ -41,6 +41,7 @@ class StretchedWireConfig(Configuration):
         ('gain', {'field': 'integrator_gain', 'dtype': int, 'not_null': True}),
         ('trig_source', {'field': 'trig_source', 'dtype': str,
                          'not_null': True}),
+        ('meas_unit', {'field': 'meas_unit', 'dtype': str, 'not_null': True}),
         ('n_scans', {'field': 'n_scans', 'dtype': int, 'not_null': True}),
         ('ac', {'field': 'acceleration', 'dtype': float, 'not_null': True}),
         ('spdv', {'field': 'vertical_speed', 'dtype': float,
@@ -62,10 +63,12 @@ class StretchedWireConfig(Configuration):
         self.date = None
         self.hour = None
         self.ppmac_ip = '10.0.28.39'
+        self.position = 0
         self.fdi_bench = 3
         self.gain = 100
         self.n_pts = 0
         self.trig_source = 'External'
+        self.meas_unit = 'V.s'
         self.ac = 0.5  # s
         self.spdv = 0.02  # mm/s
         self.spdh = 2  # mm/s
@@ -93,6 +96,8 @@ class StretchedWireConfig(Configuration):
         self.m_ac = self.ac * 1000  # ms
         self.m_spdv = self.spdv * _counts_per_mm * 0.001  # counts/ms
         self.m_spdh = self.spdh * _counts_per_mm * 0.001  # counts/ms
+        self.m_hvel = self.vel * _counts_per_mm * 0.001  # counts/ms
+        self.m_vvel = self.vel * _counts_per_mm * 0.001  # counts/ms
 
     def meas_calculus(self):
         if self.axis1 == 'X':

@@ -15,4 +15,7 @@ __credits__ = [
     ('Deziner Folio', 'Configure Icon (from findicons.com)'),
     ('GNOME icon artists', 'Save Icon (from findicons.com)'),
     ('GraphicRating.com', 'Results Icon (from findicons.com)'),
+    ('GNOME icon artists', 'Clear Icon (from findicons.com)'),
+    ('Midtone Design Studio', 'Db Icon (from findicons.com)'),
+    ('AMAZIGH Aneglus', 'Save file Icon (from findicons.com)')
     ]
