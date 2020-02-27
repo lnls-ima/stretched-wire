@@ -1,5 +1,6 @@
 """Stretched Wire configuration module."""
 
+import numpy as _np
 import collections as _collections
 from imautils.db.database import DatabaseAndFileDocument
 
@@ -7,7 +8,6 @@ from imautils.db.database import DatabaseAndFileDocument
 class StretchedWireConfig(DatabaseAndFileDocument):
     """Stretched Wire configuration parameters class."""
 
-    mongo = False
     label = 'Stretched Wire Configuration'
     collection_name = 'configuration'
     db_dict = _collections.OrderedDict([
@@ -58,7 +58,15 @@ class StretchedWireConfig(DatabaseAndFileDocument):
                          'not_null': False}),
     ])
 
-    def __init__(self):
+    def __init__(self, database_name=None, mongo=False, server=None):
+        """Initialize object.
+
+        Args:
+            database_name (str): database file path (sqlite) or name (mongo).
+            mongo (bool): flag indicating mongoDB (True) or sqlite (False).
+            server (str): MongoDB server.
+
+        """
         self.idn = None
         self.date = None
         self.hour = None
@@ -89,7 +97,8 @@ class StretchedWireConfig(DatabaseAndFileDocument):
         self.limit_max_X = None
         self.limit_min_Y = None
         self.limit_max_Y = None
-        super().__init__()
+        super().__init__(database_name=database_name,
+                         mongo=mongo, server=server)
 
     def motor_calculus(self):
         _counts_per_mm = 50000
@@ -106,3 +115,144 @@ class StretchedWireConfig(DatabaseAndFileDocument):
             _spd = self.spdv
 
         self.time_limit = (2 * abs(self.analysis_interval/_spd)) + 2
+
+
+class PowerSupplyConfig(DatabaseAndFileDocument):
+    """Read, write and store Power Supply configuration data."""
+
+    label = 'PowerSupply'
+    collection_name = 'power_supply'
+    db_dict = _collections.OrderedDict([
+        ('idn', {'field': 'id', 'dtype': int, 'not_null': True}),
+        ('date', {'field': 'date', 'dtype': str, 'not_null': True}),
+        ('hour', {'field': 'hour', 'dtype': str, 'not_null': True}),
+        ('ps_name', {'field': 'name', 'dtype': str, 'not_null': True}),
+        ('ps_type', {'field': 'type', 'dtype': int, 'not_null': True}),
+        ('dclink', {'field': 'dclink', 'dtype': float, 'not_null': False}),
+        ('ps_setpoint',
+            {'field': 'setpoint', 'dtype': float, 'not_null': True}),
+        ('maximum_current',
+            {'field': 'maximum current', 'dtype': float, 'not_null': True}),
+        ('minimum_current',
+            {'field': 'minimum current', 'dtype': float, 'not_null': True}),
+        ('dcct',
+            {'field': 'DCCT Enabled', 'dtype': int, 'not_null': True}),
+        ('dcct_head',
+            {'field': 'DCCT Head', 'dtype': int, 'not_null': True}),
+        ('Kp', {'field': 'Kp', 'dtype': float, 'not_null': True}),
+        ('Ki', {'field': 'Ki', 'dtype': float, 'not_null': True}),
+        ('current_array', {
+            'field': 'current array',
+            'dtype': _np.ndarray, 'not_null': False}),
+        ('trapezoidal_array', {
+            'field': 'trapezoidal array',
+            'dtype': _np.ndarray, 'not_null': False}),
+        ('trapezoidal_offset', {
+            'field': 'trapezoidal offset',
+            'dtype': float, 'not_null': True}),
+        ('sinusoidal_amplitude', {
+            'field': 'sinusoidal amplitude',
+            'dtype': float, 'not_null': True}),
+        ('sinusoidal_offset', {
+            'field': 'sinusoidal offset',
+            'dtype': float, 'not_null': True}),
+        ('sinusoidal_frequency', {
+            'field': 'sinusoidal frequency',
+            'dtype': float, 'not_null': True}),
+        ('sinusoidal_ncycles', {
+            'field': 'sinusoidal cycles',
+            'dtype': int, 'not_null': True}),
+        ('sinusoidal_phasei', {
+            'field': 'sinusoidal initial phase',
+            'dtype': float, 'not_null': True}),
+        ('sinusoidal_phasef', {
+            'field': 'sinusoidal final phase',
+            'dtype': float, 'not_null': True}),
+        ('dsinusoidal_amplitude', {
+            'field': 'damped sinusoidal amplitude',
+            'dtype': float, 'not_null': True}),
+        ('dsinusoidal_offset', {
+            'field': 'damped sinusoidal offset',
+            'dtype': float, 'not_null': True}),
+        ('dsinusoidal_frequency', {
+            'field': 'damped sinusoidal frequency',
+            'dtype': float, 'not_null': True}),
+        ('dsinusoidal_ncycles', {
+            'field': 'damped sinusoidal cycles',
+            'dtype': int, 'not_null': True}),
+        ('dsinusoidal_phasei', {
+            'field': 'damped sinusoidal initial phase',
+            'dtype': float, 'not_null': True}),
+        ('dsinusoidal_phasef', {
+            'field': 'damped sinusoidal final phase',
+            'dtype': float, 'not_null': True}),
+        ('dsinusoidal_damp', {
+            'field': 'damped sinusoidal damping',
+            'dtype': float, 'not_null': True}),
+        ('dsinusoidal2_amplitude', {
+            'field': 'damped sinusoidal2 amplitude',
+            'dtype': float, 'not_null': True}),
+        ('dsinusoidal2_offset', {
+            'field': 'damped sinusoidal2 offset',
+            'dtype': float, 'not_null': True}),
+        ('dsinusoidal2_frequency', {
+            'field': 'damped sinusoidal2 frequency',
+            'dtype': float, 'not_null': True}),
+        ('dsinusoidal2_ncycles', {
+            'field': 'damped sinusoidal2 cycles',
+            'dtype': int, 'not_null': True}),
+        ('dsinusoidal2_phasei', {
+            'field': 'damped sinusoidal2 initial phase',
+            'dtype': float, 'not_null': True}),
+        ('dsinusoidal2_phasef', {
+            'field': 'damped sinusoidal2 final phase',
+            'dtype': float, 'not_null': True}),
+        ('dsinusoidal2_damp', {
+            'field': 'damped sinusoidal2 damping',
+            'dtype': float, 'not_null': True}),
+    ])
+
+    def __init__(
+            self, database_name=None, mongo=False, server=None):
+        """Initialize object.
+
+        Args:
+            filename (str): connection configuration filepath.
+            database_name (str): database file path (sqlite) or name (mongo).
+            idn (int): id in database table (sqlite) / collection (mongo).
+            mongo (bool): flag indicating mongoDB (True) or sqlite (False).
+            server (str): MongoDB server.
+
+        """
+        # DC link voltage (90V is the default)
+        self.dclink = 90
+        # True for DCCT enabled, False for DCCT disabled
+        self.dcct = False
+        # Power supply status (False = off, True = on)
+        self.status = False
+        # Power supply loop status (False = open, True = closed)
+        self.status_loop = False
+        # Power supply connection status (False = no communication)
+        self.status_con = False
+        # Power supply interlock status (True = active, False = not active)
+        self.status_interlock = False
+        # Main current
+        self.main_current = 0
+        # Flag to enable or disable display update
+        self.update_display = True
+
+        super().__init__(
+            database_name=database_name, mongo=mongo, server=server)
+
+    def get_power_supply_id(self, ps_name):
+        """Get power supply database id number."""
+        docs = self.db_search_field(self.db_dict['ps_name']['field'], ps_name)
+
+        if len(docs) == 0:
+            return None
+
+        return docs[-1][self.db_dict['idn']['field']]
+
+    def get_power_supply_list(self):
+        """Get list of power supply names from database."""
+        return self.db_get_values(self.db_dict['ps_name']['field'])

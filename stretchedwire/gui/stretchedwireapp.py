@@ -1,19 +1,14 @@
 # -*- coding: utf-8 -*-
 """Stretched Wire application."""
 
-import os as _os
 import sys as _sys
 import threading as _threading
 
 from qtpy.QtWidgets import QApplication as _QApplication
 from stretchedwire.gui.mainwindow import MainWindow as _MainWindow
 from stretchedwire.data import meas as _meas
-
-# Styles: ["windows", "motif", "cde", "plastique", "windowsxp", or "macintosh"]
-_style = 'windows'
-_width = 800
-_height = 500
-_database_filename = 'stretched_wire_measurements.db'
+from stretchedwire.gui import utils as _utils
+import stretchedwire.data as _data
 
 
 class StretchedWireApp(_QApplication):
@@ -22,19 +17,33 @@ class StretchedWireApp(_QApplication):
     def __init__(self, args):
         """Start application."""
         super().__init__(args)
-        self.setStyle(_style)
+        self.setStyle(_utils.WINDOW_STYLE)
 
         self.meas = _meas
 
-        self.directory = _os.path.dirname(_os.path.dirname(
-            _os.path.dirname(_os.path.abspath(__file__))))
-        self.meas.database_name = _os.path.join(
-            self.directory, _database_filename)
+        self.directory = _utils.BASEPATH
+        self.database_name = _utils.DATABASE_NAME
+        self.mongo = _utils.MONGO
+        self.server = _utils.SERVER
         self.create_database()
 
     def create_database(self):
-        """Create collections."""
-        if not self.meas.db_create_collection():
+        """Create database and tables."""
+        _Config = _data.configuration.StretchedWireConfig(
+            database_name=self.database_name,
+            mongo=self.mongo, server=self.server)
+        _Meas = _data.measurement.StretchedWireMeas(
+            database_name=self.database_name,
+            mongo=self.mongo, server=self.server)
+        _PowerSupplyConfig = _data.configuration.PowerSupplyConfig(
+            database_name=self.database_name,
+            mongo=self.mongo, server=self.server)
+
+        status = []
+        status.append(_Config.db_create_collection())
+        status.append(_Meas.db_create_collection())
+        status.append(_PowerSupplyConfig.db_create_collection())
+        if not all(status):
             raise Exception("Failed to create database.")
 
 
@@ -51,9 +60,11 @@ class GUIThread(_threading.Thread):
 
     def run(self):
         """Thread target function."""
-        if not _QApplication.instance():
+        if (not _QApplication.instance()):
+            print('oi')
             self.app = StretchedWireApp([])
-            self.window = _MainWindow(width=_width, height=_height)
+            self.window = _MainWindow(
+                width=_utils.WINDOW_WIDTH, height=_utils.WINDOW_HEIGHT)
             self.window.show()
             _sys.exit(self.app.exec_())
 
@@ -63,7 +74,8 @@ def run():
     app = None
     if not _QApplication.instance():
         app = StretchedWireApp([])
-        window = _MainWindow(width=_width, height=_height)
+        window = _MainWindow(
+            width=_utils.WINDOW_WIDTH, height=_utils.WINDOW_HEIGHT)
         window.show()
         _sys.exit(app.exec_())
 

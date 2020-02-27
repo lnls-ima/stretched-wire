@@ -315,7 +315,7 @@ Limit Switch</string>
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>../../resources/img/refresh.png</normaloff>../../resources/img/refresh.png</iconset>
+                <normaloff>../../resources/img/refresh.svg</normaloff>../../resources/img/refresh.svg</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -493,7 +493,7 @@ Limit Switch</string>
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>../../resources/img/refresh.png</normaloff>../../resources/img/refresh.png</iconset>
+                <normaloff>../../resources/img/refresh.svg</normaloff>../../resources/img/refresh.svg</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -619,7 +619,7 @@ Limit Switch</string>
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>../../resources/img/refresh.png</normaloff>../../resources/img/refresh.png</iconset>
+                <normaloff>../../resources/img/refresh.svg</normaloff>../../resources/img/refresh.svg</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -719,7 +719,7 @@ Limit Switch</string>
                 </property>
                 <property name="icon">
                  <iconset>
-                  <normaloff>../../resources/img/play.png</normaloff>../../resources/img/play.png</iconset>
+                  <normaloff>../../resources/img/move.svg</normaloff>../../resources/img/move.svg</iconset>
                 </property>
                 <property name="iconSize">
                  <size>
@@ -742,7 +742,7 @@ Limit Switch</string>
                 </property>
                 <property name="icon">
                  <iconset>
-                  <normaloff>../../resources/img/stop_sign.png</normaloff>../../resources/img/stop_sign.png</iconset>
+                  <normaloff>../../resources/img/stop.svg</normaloff>../../resources/img/stop.svg</iconset>
                 </property>
                 <property name="iconSize">
                  <size>
@@ -1043,7 +1043,7 @@ Limit Switch</string>
                 </property>
                 <property name="icon">
                  <iconset>
-                  <normaloff>../../resources/img/play.png</normaloff>../../resources/img/play.png</iconset>
+                  <normaloff>../../resources/img/move.svg</normaloff>../../resources/img/move.svg</iconset>
                 </property>
                 <property name="iconSize">
                  <size>
@@ -1071,7 +1071,7 @@ Limit Switch</string>
                 </property>
                 <property name="icon">
                  <iconset>
-                  <normaloff>../../resources/img/stop_sign.png</normaloff>../../resources/img/stop_sign.png</iconset>
+                  <normaloff>../../resources/img/stop.svg</normaloff>../../resources/img/stop.svg</iconset>
                 </property>
                 <property name="iconSize">
                  <size>
@@ -1218,7 +1218,7 @@ Limit Switch</string>
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>../../resources/img/refresh.png</normaloff>../../resources/img/refresh.png</iconset>
+                <normaloff>../../resources/img/refresh.svg</normaloff>../../resources/img/refresh.svg</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -1616,10 +1616,6 @@ Limit Switch</string>
               </property>
               <property name="text">
                <string>Configure Motors</string>
-              </property>
-              <property name="icon">
-               <iconset>
-                <normaloff>../../resources/img/settings.png</normaloff>../../resources/img/settings.png</iconset>
               </property>
               <property name="iconSize">
                <size>

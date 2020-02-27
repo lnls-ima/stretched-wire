@@ -2,8 +2,7 @@
 
 from stretchedwire.gui import stretchedwireapp
 
-_run_in_thread = False
-
+_run_in_thread = True
 
 if _run_in_thread:
     thread = stretchedwireapp.run_in_thread()

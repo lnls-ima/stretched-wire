@@ -85,10 +85,6 @@
            <property name="text">
             <string>Configure Integrator</string>
            </property>
-           <property name="icon">
-            <iconset>
-             <normaloff>../../resources/img/settings.png</normaloff>../../resources/img/settings.png</iconset>
-           </property>
            <property name="iconSize">
             <size>
              <width>22</width>
@@ -321,11 +317,11 @@
             </size>
            </property>
            <property name="text">
-            <string>Update</string>
+            <string>Refresh</string>
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>../../resources/img/refresh.png</normaloff>../../resources/img/refresh.png</iconset>
+             <normaloff>../../resources/img/refresh.svg</normaloff>../../resources/img/refresh.svg</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -445,7 +441,7 @@
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>../../resources/img/document_save_as.png</normaloff>../../resources/img/document_save_as.png</iconset>
+             <normaloff>../../resources/img/save.svg</normaloff>../../resources/img/save.svg</iconset>
            </property>
            <property name="iconSize">
             <size>

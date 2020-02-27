@@ -17,11 +17,11 @@ class StretchedWireMeas(DatabaseAndFileDocument):
         ('hour', {'field': 'hour', 'dtype': str, 'not_null': True}),
         ('operator', {'field': 'operator', 'dtype': str,
                       'not_null': False}),
-        ('magnet_name', {'field': 'magnet_name', 'dtype': str,
+        ('magnet_name', {'field': 'magnet name', 'dtype': str,
                          'not_null': False}),
-        ('axis1', {'field': 'measurement_axis1', 'dtype': str,
+        ('axis1', {'field': 'measurement axis1', 'dtype': str,
                    'not_null': False}),
-        ('type', {'field': 'measurement_type', 'dtype': str,
+        ('type', {'field': 'measurement type', 'dtype': str,
                   'not_null': False}),
         ('comments', {'field': 'comments', 'dtype': str,
                       'not_null': False}),
@@ -35,18 +35,24 @@ class StretchedWireMeas(DatabaseAndFileDocument):
                    'not_null': False}),
         ('vel', {'field': 'vel', 'dtype': float,
                  'not_null': False}),
-        ('raw_data', {'field': 'raw_data', 'dtype': _np.ndarray,
+        ('raw_data', {'field': 'raw data', 'dtype': _np.ndarray,
                       'not_null': True}),
-        ('first_integral', {'field': 'first_integral', 'dtype': _np.ndarray,
+        ('first_integral', {'field': 'first integral', 'dtype': _np.ndarray,
                             'not_null': True}),
-        ('second_integral', {'field': 'second_integral', 'dtype': _np.ndarray,
+        ('second_integral', {'field': 'second integral', 'dtype': _np.ndarray,
                              'not_null': True}),
     ])
 
-    def __init__(self):
-        self.idn = None
-        self.date = None
-        self.hour = None
+    def __init__(
+            self, database_name=None, mongo=False, server=None):
+        """Initialize object.
+
+        Args:
+            database_name (str): database file path (sqlite) or name (mongo).
+            mongo (bool): flag indicating mongoDB (True) or sqlite (False).
+            server (str): MongoDB server.
+
+        """
         self.operator = ''
         self.magnet_name = ''
         self.axis1 = ''
@@ -60,7 +66,8 @@ class StretchedWireMeas(DatabaseAndFileDocument):
         self.raw_data = None
         self.first_integral = _np.ndarray([])
         self.second_integral = _np.ndarray([])
-        super().__init__()
+        super().__init__(database_name=database_name,
+                         mongo=mongo, server=server)
 
     def first_integral_calculus(self):
         pass

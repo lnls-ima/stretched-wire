@@ -25,14 +25,18 @@ from stretchedwire.gui.resultswidget \
  import ResultsWidget as _ResultsWidget
 from stretchedwire.gui.databasewidget \
  import DatabaseWidget as _DatabaseWidget
+from stretchedwire.gui.powersupplywidget \
+ import PowerSupplyWidget as _PowerSupplyWidget
 
-from stretchedwire.data import meas as _meas
+from stretchedwire.gui import utils as _utils
 
 
 class MainWindow(_QMainWindow):
     """Main Window class for the Stretched Wire GUI."""
 
-    def __init__(self, parent=None, width=500, height=800):
+    def __init__(
+            self, parent=None, width=_utils.WINDOW_WIDTH,
+            height=_utils.WINDOW_HEIGHT):
         """Set up the ui and add main tabs."""
         super().__init__(parent)
 
@@ -41,13 +45,12 @@ class MainWindow(_QMainWindow):
         self.ui = _uic.loadUi(uifile, self)
         self.resize(width, height)
 
-        self.meas = _meas
-
         # define tab names and corresponding widgets
         self.tab_names = [
             'Connection',
             'Motors',
             'Integrator',
+            'PowerSupply',
             'Measurements',
             'Results',
             'Database'
@@ -57,13 +60,14 @@ class MainWindow(_QMainWindow):
             _ConnectionWidget(),
             _MotorsWidget(),
             _IntegratorWidget(),
+            _PowerSupplyWidget(),
             _MeasurementsWidget(),
             _ResultsWidget(),
             _DatabaseWidget(),
             ]
 
         # show database name
-        self.ui.le_database.setText(self.meas.database_name)
+        self.ui.le_database.setText(self.database_name)
 
         # add widgets to main tab
         self.ui.twg_main_tab.clear()
@@ -81,13 +85,13 @@ class MainWindow(_QMainWindow):
         self.ui.tbt_database.clicked.connect(self.changeDatabase)
 
     @property
-    def database(self):
-        """Return the database filename."""
-        return _QApplication.instance().database
+    def database_name(self):
+        """Return the database name."""
+        return _QApplication.instance().database_name
 
-    @database.setter
-    def database(self, value):
-        _QApplication.instance().database = value
+    @database_name.setter
+    def database_name(self, value):
+        _QApplication.instance().database_name = value
 
     @property
     def directory(self):
@@ -106,8 +110,8 @@ class MainWindow(_QMainWindow):
         if len(fn) == 0:
             return
 
-        self.meas.database_name = fn
-        self.ui.le_database.setText(self.meas.database_name)
+        self.database_name = fn
+        self.ui.le_database.setText(self.database_name)
 
     def closeEvent(self, event):
         """Close main window and tabs."""

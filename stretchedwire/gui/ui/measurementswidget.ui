@@ -59,7 +59,7 @@
          </property>
          <property name="icon">
           <iconset>
-           <normaloff>../../resources/img/gnome_edit_clear.png</normaloff>../../resources/img/gnome_edit_clear.png</iconset>
+           <normaloff>../../resources/img/clear.svg</normaloff>../../resources/img/clear.svg</iconset>
          </property>
          <property name="iconSize">
           <size>
@@ -76,7 +76,7 @@
          </property>
          <property name="icon">
           <iconset>
-           <normaloff>../../resources/img/document_save_as.png</normaloff>../../resources/img/document_save_as.png</iconset>
+           <normaloff>../../resources/img/save.svg</normaloff>../../resources/img/save.svg</iconset>
          </property>
          <property name="iconSize">
           <size>
@@ -93,7 +93,7 @@
          </property>
          <property name="icon">
           <iconset>
-           <normaloff>../../resources/img/Database.png</normaloff>../../resources/img/Database.png</iconset>
+           <normaloff>../../resources/img/database_plus.svg</normaloff>../../resources/img/database_plus.svg</iconset>
          </property>
          <property name="iconSize">
           <size>
@@ -156,16 +156,16 @@
         </size>
        </property>
        <property name="text">
-        <string>Collect</string>
+        <string>Measure</string>
        </property>
        <property name="icon">
         <iconset>
-         <normaloff>../../resources/img/play.png</normaloff>../../resources/img/play.png</iconset>
+         <normaloff>../../resources/img/move.svg</normaloff>../../resources/img/move.svg</iconset>
        </property>
        <property name="iconSize">
         <size>
-         <width>70</width>
-         <height>70</height>
+         <width>25</width>
+         <height>25</height>
         </size>
        </property>
       </widget>
@@ -198,12 +198,12 @@
        </property>
        <property name="icon">
         <iconset>
-         <normaloff>../../resources/img/stop_sign.png</normaloff>../../resources/img/stop_sign.png</iconset>
+         <normaloff>../../resources/img/stop.svg</normaloff>../../resources/img/stop.svg</iconset>
        </property>
        <property name="iconSize">
         <size>
-         <width>30</width>
-         <height>30</height>
+         <width>25</width>
+         <height>25</height>
         </size>
        </property>
       </widget>
@@ -285,12 +285,12 @@
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>../../resources/img/gnome_media_floppy.png</normaloff>../../resources/img/gnome_media_floppy.png</iconset>
+             <normaloff>../../resources/img/save.svg</normaloff>../../resources/img/save.svg</iconset>
            </property>
            <property name="iconSize">
             <size>
-             <width>20</width>
-             <height>20</height>
+             <width>25</width>
+             <height>25</height>
             </size>
            </property>
           </widget>
@@ -706,7 +706,7 @@
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>../../resources/img/refresh.png</normaloff>../../resources/img/refresh.png</iconset>
+             <normaloff>../../resources/img/refresh.svg</normaloff>../../resources/img/refresh.svg</iconset>
            </property>
           </widget>
          </item>
@@ -811,7 +811,14 @@
           </widget>
          </item>
          <item row="3" column="2">
-          <widget class="QLineEdit" name="le_comments"/>
+          <widget class="QLineEdit" name="le_comments">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+          </widget>
          </item>
          <item row="4" column="2">
           <widget class="QSpinBox" name="sb_nr_of_measurements">
